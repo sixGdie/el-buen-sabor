@@ -1,5 +1,5 @@
 export interface IProduct {
-    id: number;
+    _id: number;
     nombre: string;
     rubro: ITypes;
     categoria: ICategories;
@@ -10,6 +10,8 @@ export interface IProduct {
     inStock: number;
     slug: string;
     tags: string[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export type ITypes = 'bebidas'|'comidas'|'promos';

@@ -8,7 +8,7 @@ interface SeedProduct {
     descripcion: string;
     inStock: number;
     slug: string;
-    tags: string[];
+    tags: string;
 }
 
 type ValidTypes = 'bebidas'|'comidas'|'promos';
@@ -36,7 +36,7 @@ export const initialData: SeedData = {
             descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
             inStock: 7,
             slug: "tarta_vegetales_mediterraneo",
-            tags: ['tarta'],
+            tags: 'tarta',
         },
         {
             nombre: "Pizza romana agridulce",
@@ -51,7 +51,7 @@ export const initialData: SeedData = {
             descripcion: "Una pizza distinta para quienes no tienen temor de Dios. Mezcla los sabores mediterraneos de siempre con crema y frutillas. El sabor del pecado, deshonor a la pizza.",
             inStock: 7,
             slug: "pizza_romana_agridulce",
-            tags: ['pizza_deshonor'],
+            tags: 'pizza_deshonor',
         },
         {
             nombre: "Papas Fritas",
@@ -66,7 +66,7 @@ export const initialData: SeedData = {
             descripcion: "Papas fritas comunes, la opción que nunca falla, nunca decepciona.",
             inStock: 7,
             slug: "papas_fritas",
-            tags: ['papas'],
+            tags: 'papas',
         },
         {
             nombre: "Combo papas con barbacoa",
@@ -81,7 +81,7 @@ export const initialData: SeedData = {
             descripcion: "Papas fritas con verdeo y perejil acompañas de dip de salsa barbacoa. Para el gourmet de barrio.",
             inStock: 7,
             slug: "combo_papas_barbacoa",
-            tags: ['papas'],
+            tags: 'papas',
         },
         {
             nombre: "Pizza romana",
@@ -96,7 +96,7 @@ export const initialData: SeedData = {
             descripcion: "Pizza romana mediterránea clásica. Mozzarella, tomate cherry y albahaca. Al fin comida de verdad.",
             inStock: 7,
             slug: "pizza_romana",
-            tags: ['pizza'],
+            tags: 'pizza',
         },
         {
             nombre: "Picada",
@@ -111,7 +111,7 @@ export const initialData: SeedData = {
             descripcion: "Picada simple de embutidos y aceitunas. Bebida no incluída.",
             inStock: 7,
             slug: "picada",
-            tags: ['picada'],
+            tags: 'picada',
         },
         {
             nombre: "Hamburguesa bacon con fritas",
@@ -126,7 +126,7 @@ export const initialData: SeedData = {
             descripcion: "Hamburguesa con bacon frito y guarnición de papas fritas.",
             inStock: 7,
             slug: "hamburguesa_bacon_fritas",
-            tags: ['hamburguesa'],
+            tags: 'hamburguesa',
         },
         {
             nombre: "Hamburguesa con queso y fritas",
@@ -141,7 +141,7 @@ export const initialData: SeedData = {
             descripcion: "Hamburguesa con queso y guarnición de papas fritas.",
             inStock: 7,
             slug: "hamburguesa_queso_fritas",
-            tags: ['hamburguesa'],
+            tags: 'hamburguesa',
         },    
     ]
 }
