@@ -1,3 +1,5 @@
+import bcrypt from 'bcryptjs';
+
 interface SeedProduct {
     nombre: string;
     rubro: ValidTypes;
@@ -11,10 +13,19 @@ interface SeedProduct {
     tags: string;
 }
 
+interface SeedUser {
+    name: string;
+    email: string;
+    password: string;
+    role: 'admin'|'client';
+}
+
+
 type ValidTypes = 'bebidas'|'comidas'|'promos';
 type ValidCategories = 'bebida'|'hamburguesa'|'pizza'|'pancho'|'guarnicion'|'lomo'|'otro';
 
 interface SeedData {
+    users: SeedUser[];
     products: SeedProduct[],
 }
 
@@ -22,6 +33,20 @@ interface SeedData {
 
 
 export const initialData: SeedData = {
+    users: [
+        {
+            name: 'Juan Carlos BuenSabor',
+            email: 'juanbuensabor@gmail.com',
+            password: bcrypt.hashSync('123456'),
+            role: 'admin'
+        },
+        {
+            name: 'Alberto Gimenez',
+            email: 'albertobuensabor@gmail.com',
+            password: bcrypt.hashSync('123456'),
+            role: 'client'
+        },
+    ],
     products: [
         {
             nombre: "Tarta de queso y vegetales",
