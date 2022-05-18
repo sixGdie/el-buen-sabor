@@ -10,6 +10,7 @@ interface ContextProps {
         hasError: boolean;
         message?: string;
     }>;
+    logout: () => void;
 }
 
 
