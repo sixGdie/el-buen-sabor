@@ -1,10 +1,13 @@
 import { Box, Button, Chip, Grid, Typography } from '@mui/material';
 import { NextPage, GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
+import { useState, useContext } from 'react';
 import { ShopLayout } from '../../components/layouts/ShopLayout';
 import { ProductSlideshow } from '../../components/products';
 import { ItemCounter } from '../../components/ui';
 import { dbProducts } from '../../database';
-import { IProduct } from '../../interfaces';
+import { ICartProduct, IProduct } from '../../interfaces';
+import { CartContext } from '../../context/cart/CartContext';
 
 interface Props {
   product: IProduct;
@@ -12,9 +15,31 @@ interface Props {
 
 const ProductPage:NextPage<Props> = ({product}) => {
 
-  //const router = useRouter();
-  //const {products: product, isLoading} = useProducts(`/products/${router.query.slug}`);
+  const router = useRouter();
+  const { addProductToCard } = useContext( CartContext );
 
+  const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
+    _id: product._id,
+    nombre: product.nombre,
+    imagenes: product.imagenes[0],
+    precio: product.precio,
+    costoEnvio: product.costoEnvio,
+    inStock: product.inStock,
+    slug: product.slug,
+    cantidad: 1,
+  })
+
+  const onUpdateQuantity = (cantidad: number) => {
+    setTempCartProduct(currentProduct => ({
+      ...currentProduct,
+      cantidad
+    }))
+  }
+
+  const onAddProduct = () => {
+    addProductToCard(tempCartProduct);
+    router.push('/cart');
+  }
 
   return (
     <ShopLayout title={ product.nombre } pageDescription={ product.descripcion }>
@@ -32,15 +57,27 @@ const ProductPage:NextPage<Props> = ({product}) => {
 
             <Box sx={{my: 2}}>
               <Typography variant='subtitle2'>Cantidad</Typography>
-              <ItemCounter/>
-            </Box>
-
-            <Button color="secondary" className='circular-btn'>
-              Agregar al carrito
-            </Button>
-
-            <Chip label='No hay stock' color='error' variant='outlined'/>
-
+              <ItemCounter
+                currentValue={tempCartProduct.cantidad}
+                updatedQuantity={onUpdateQuantity}
+                maxValue={product.inStock}
+              />
+            </Box>    
+            {
+              (product.inStock > 0)
+                ? (
+                  <Button 
+                    color="secondary" 
+                    className='circular-btn'
+                    onClick={ onAddProduct }
+                  >
+                    Agregar al carrito
+                  </Button>
+                ) 
+                : (
+                  <Chip label='No hay stock' color='error' variant='outlined'/>
+                )
+            }
             <Box sx={{ mt:3 }}>
               <Typography variant='subtitle2'>Descripción</Typography>
               <Typography variant='body2'>{ product.descripcion }</Typography>

@@ -1,31 +1,35 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import NextLink from 'next/link';
 import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '@mui/material';
 import { ItemCounter } from '../ui';
-import { initialData } from '../../database/products';
-
-const productsInCart = [
-    initialData.products[0],
-    initialData.products[1],
-    initialData.products[2],
-]
+import { CartContext } from '../../context';
+import { ICartProduct } from '../../interfaces';
+import { currency } from '../../utils';
 
 interface Props {
     editable?: boolean
 }
 
 export const CartList: FC<Props> = ({ editable = false }) => {
-  return (
+
+    const { cart, updateCartQuantity, removeCartProduct } = useContext(CartContext);
+
+    const onNewCartQuantityValue = (product: ICartProduct, newQuantityValue: number) => {
+        product.cantidad = newQuantityValue;
+        updateCartQuantity(product);
+    }
+
+    return (
       <>
         {
-            productsInCart.map(product => (
+            cart.map(product => (
                 <Grid container spacing={2} key={ product.slug } sx={{ md:1 }}>
                     <Grid item xs={3}>
-                        <NextLink href="/product/slug" passHref>
+                        <NextLink href={`/product/${product.slug}`} passHref>
                             <Link>
                                 <CardActionArea>
                                     <CardMedia
-                                        image={ `/products/${ product.imagenes[0] }` }
+                                        image={ `/products/${ product.imagenes }` }
                                         component="img"
                                         sx={{borderRadius: '5px'}}
                                     />
@@ -38,17 +42,34 @@ export const CartList: FC<Props> = ({ editable = false }) => {
                             <Typography variant='body1'>{ product.nombre }</Typography>
                             {
                                 editable 
-                                ? <ItemCounter/>
-                                : <Typography variant='h6'>3</Typography>
+                                ? (
+                                    <ItemCounter 
+                                        currentValue={product.cantidad} 
+                                        maxValue={product.inStock} 
+                                        updatedQuantity={ (newValue) => {
+                                            onNewCartQuantityValue(product, newValue)
+                                        }}
+                                    />
+                                )
+                                : (
+                                    <Typography variant='h6'>
+                                        { product.cantidad } 
+                                        { product.cantidad > 1 ? ' unidades' : ' unidad' }
+                                    </Typography>
+                                )
                             }
                             
                         </Box>
                     </Grid>
                     <Grid item xs={2} display='flex' alignContent='center' flexDirection='column'>
-                        <Typography variant='subtitle1'>{`$${ product.precio }`}</Typography> 
+                        <Typography variant='subtitle1'>{currency.format(product.precio)}</Typography> 
                         {
                             editable && (
-                                <Button variant='text' color='secondary'>
+                                <Button 
+                                    variant='text' 
+                                    color='secondary'
+                                    onClick={() => removeCartProduct(product)}
+                                >
                                     Remover
                                 </Button>
                             )

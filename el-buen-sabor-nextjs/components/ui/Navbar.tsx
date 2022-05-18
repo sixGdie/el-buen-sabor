@@ -2,9 +2,7 @@ import NextLink from 'next/link';
 import { AppBar, Badge, Box, IconButton, Link, Toolbar, Typography, Button, Input, InputAdornment } from '@mui/material';
 import { ClearOutlined, SearchOutlined, ShoppingCartOutlined } from '@mui/icons-material';
 import { useRouter } from 'next/router';
-import { ClassNames } from '@emotion/react';
-import { color } from '@mui/system';
-import { UiContext } from '../../context';
+import { UiContext, CartContext } from '../../context';
 import { useContext, useState } from 'react';
 
 
@@ -12,6 +10,7 @@ export const Navbar = () => {
 
     const { asPath, push } = useRouter();
     const { toggleSideMenu } = useContext(UiContext);
+    const { numberOfItems } = useContext(CartContext);
 
     const [searchTerm, setSearchTerm] = useState('')
     const [isSearchVisible, setIsSearchVisible] = useState(false)
@@ -27,7 +26,7 @@ export const Navbar = () => {
                 <NextLink href='/' passHref>
                     <Link display='flex' alignItems='center' underline='none'>
                         <Typography variant='h6'>El Buen Sabor |</Typography>
-                        <Typography sx={{ ml: 0.5 }}>Shop</Typography>
+                        <Typography sx={{ ml: 0.5 }}>DBZ</Typography>
                     </Link>
                 </NextLink>
                 
@@ -147,7 +146,7 @@ export const Navbar = () => {
                 <NextLink href="/cart" passHref>
                     <Link underline='none'>
                         <IconButton>
-                            <Badge badgeContent={2} color='secondary'>
+                            <Badge badgeContent={numberOfItems > 9 ? '+9' : numberOfItems} color='secondary'>
                                 <ShoppingCartOutlined/>
                             </Badge>
                         </IconButton>
