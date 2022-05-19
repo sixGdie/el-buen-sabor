@@ -26,8 +26,9 @@ Este proyecto está hecho con yarn, no usar nunca npm para trabajar en el mismo.
 
 ## Bugs conocidos:
 
-Se usan las cookies para almacenar los productos en el carrito de compras. Al llegar a la página donde hay que ingresar la dirección de envío, se vacía la cookie del carrito de compras, es decir, se reemplaza por un arreglo vacío.
+Nada por ahora
 
 ## Pendiente:
 
-Quitar el uso de base de datos Mongo y la api rest nativa y usar en su lugar el backend express con base de datos MySQL
+- Quitar el uso de base de datos Mongo y la api rest nativa y usar en su lugar el backend express con base de datos MySQL
+- Ver que hacer con el costo de envío (actualmente sólo existe como placeholder en la página del carrito y sumario pero ni se calcula. Además, los productos en la db tienen cada uno su costo de envío...por ninguna razón. Cambiar eso)

@@ -1,6 +1,5 @@
 import { createContext, VoidFunctionComponent } from "react"
-import { ICartProduct } from "../../interfaces";
-import { Address } from "./";
+import { ICartProduct, SendAddress } from "../../interfaces";
 
 interface ContextProps {
     isLoaded: boolean;
@@ -10,12 +9,13 @@ interface ContextProps {
     tax: number;
     total: number;
 
-    sendAddress?: Address;
+    sendAddress?: SendAddress;
 
     addProductToCard: (product: ICartProduct) => void;
     updateCartQuantity: (product: ICartProduct) => void;
     removeCartProduct: (product: ICartProduct) => void;
-    updateAddress: (sendAddress: Address) => void;
+    updateAddress: (sendAddress: SendAddress) => void;
+    createOrder: () => Promise<{ hasError: boolean, message: string}>
 }
 
 
