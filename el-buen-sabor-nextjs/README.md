@@ -32,3 +32,5 @@ Nada por ahora
 
 - Quitar el uso de base de datos Mongo y la api rest nativa y usar en su lugar el backend express con base de datos MySQL
 - Ver que hacer con el costo de envío (actualmente sólo existe como placeholder en la página del carrito y sumario pero ni se calcula. Además, los productos en la db tienen cada uno su costo de envío...por ninguna razón. Cambiar eso)
+- Pagar con MercadoPago en lugar de PayPal
+- Loguear con facebook y google en lugar de github (tanto en el caso de paypal como github están xq era lo más fácil)
