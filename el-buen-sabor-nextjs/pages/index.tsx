@@ -4,12 +4,11 @@ import { ShopLayout } from '../components/layouts';
 import { ProductList } from '../components/products';
 import { useProducts } from '../hooks/';
 import { FullScreenLoading } from '../components/ui/';
+import { useSession } from 'next-auth/react';
 
  
 
 const HomePage: NextPage = () => {
-
-
 
   const {products, isLoading} = useProducts('/products');
 

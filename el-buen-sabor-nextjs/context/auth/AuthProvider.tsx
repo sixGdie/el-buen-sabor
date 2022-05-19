@@ -6,6 +6,7 @@ import { AuthContext, authReducer } from './';
 import { elBuenSaborApi } from '../../api';
 import axios, { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
+import { useSession, signOut } from 'next-auth/react';
 
 export interface AuthState {
     isLoggedIn: boolean;
@@ -26,10 +27,17 @@ export const AuthProvider:FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer( authReducer , AUTH_INITIAL_STATE );
     const router = useRouter();
+    const { data, status } = useSession();
+
+    /*useEffect(() => {
+        checkToken();
+    }, [])*/
 
     useEffect(() => {
-        checkToken();
-    }, [])
+        if (status === 'authenticated') {
+            dispatch({ type: '[Auth] - Login', payload: data?.user as IUser });
+        }
+    }, [status, data])
     
     const checkToken = async () => {
 
@@ -84,9 +92,17 @@ export const AuthProvider:FC<Props> = ({ children }) => {
     }
 
     const logout = () => {
-        Cookies.remove('token');
+        //Cookies.remove('token');
         Cookies.remove('cart');
-        router.reload();
+        Cookies.remove('firstName');
+        Cookies.remove('lastName');
+        Cookies.remove('address');
+        Cookies.remove('address2');
+        Cookies.remove('cp');
+        Cookies.remove('department');
+        Cookies.remove('phone');
+        //router.reload();
+        signOut();
     }
 
     return (

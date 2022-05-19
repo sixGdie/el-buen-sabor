@@ -45,7 +45,7 @@ export const CartProvider:FC<Props> = ({ children }) => {
 
     useEffect(() => {
         try {
-            const cookieProducts = Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [];
+            const cookieProducts = Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : []
             dispatch({ type: '[Cart] - LoadCart from cookies | storage', payload: cookieProducts });
         } catch(error) {
             dispatch({ type: '[Cart] - LoadCart from cookies | storage', payload: [] });
@@ -96,7 +96,7 @@ export const CartProvider:FC<Props> = ({ children }) => {
         if (!productInCart) return dispatch({ 
                                         type: '[Cart] - Update products in cart', 
                                         payload: [...state.cart, product] 
-                                    });
+                                    })
         const updatedProducts = state.cart.map(item => {
             if (item._id !== product._id) return item;
 

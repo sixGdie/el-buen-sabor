@@ -10,11 +10,17 @@ Para montar el proyecto, usar
 yarn dev
 ```
 
+Para llenar la base de datos con la seed de productos y usuarios de prueba, ir al navegador a la dirección: [http://localhost:3000/api/seed](http://localhost:3000/api/seed)
+
 El proyecto corre sobre el puerto [http://localhost:3000](http://localhost:3000)
 
 ## Fundamental:
 
 Este proyecto está hecho con yarn, no usar nunca npm para trabajar en el mismo.
+
+## Bugs conocidos:
+
+Se usan las cookies para almacenar los productos en el carrito de compras. Al llegar a la página donde hay que ingresar la dirección de envío, se vacía la cookie del carrito de compras, es decir, se reemplaza por un arreglo vacío.
 
 ## Pendiente:
 
