@@ -4,6 +4,12 @@ Proyecto de [Next.js](https://nextjs.org/) bootstrapped con [`create-next-app`](
 
 Primero hay que montar una base de datos Mongo.
 
+Adicionalmente hay que reconstruir los paquetes y dependencias del proyecto usando
+
+```bash
+yarn install
+```
+
 Para montar el proyecto, usar
 
 ```bash

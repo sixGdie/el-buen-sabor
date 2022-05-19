@@ -30,7 +30,7 @@ interface Props {
 
 const CART_INITIAL_STATE: CartState = {
     isLoaded: false,
-    cart: [],
+    cart: Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [],
     numberOfItems: 0,
     subTotal: 0,
     tax: 0,
