@@ -1,6 +1,7 @@
 import { IUser } from "./";
 
 export interface IOrder {
+    [x: string]: any;
     _id?: string;
     user?: IUser | string;
     orderItems: IOrderItem[];
@@ -13,6 +14,8 @@ export interface IOrder {
     isPaid: boolean;
     paidAt?: string;
     transactionId?: string;
+
+    createdAt?: string;
 }
 
 export interface IOrderItem {
