@@ -37,5 +37,9 @@ const getProductsBySlug = async (req: NextApiRequest, res: NextApiResponse<Data>
         })
     }
 
+    product.imagenes = product.imagenes.map(img => {
+        return img.includes('http') ? img : `${process.env.HOST_NAME}products/${img}`;
+    });
+
     res.status(200).json( product )
 }
