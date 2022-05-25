@@ -26,9 +26,9 @@ Este proyecto está hecho con yarn, no usar nunca npm para trabajar en el mismo.
 
 ## Versión de node:
     
-    ```bash
+```bash
 v16.14.2
-    ```
+```
 
 ## Bugs conocidos:
 
