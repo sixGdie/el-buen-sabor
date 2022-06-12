@@ -11,6 +11,7 @@ import { PayPalButtons } from '@paypal/react-paypal-js';
 import elBuenSaborApi from '../../api/elBuenSaborApi';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { Order } from '../../models';
 
 export type OrderResponseBody = {
     id: string;
@@ -228,7 +229,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
         }
     }
 
-    const order = await dbOrders.getOrderById( id.toString() );
+    let order = await dbOrders.getOrderById( id.toString() );
     
     if(!order) {
         return {
@@ -249,10 +250,22 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
     }
 
     if(paid === 'true') {
-        order.isPaid = true;
         await db.connect();
-        order.save();
-        await db.disconnect();
+        const dbOrder = await Order.findById(order._id);
+
+        if ( !dbOrder ) {
+            await db.disconnect();
+        }else{
+            dbOrder.isPaid = true;
+            await dbOrder.save();
+            await db.disconnect()
+            order = await dbOrders.getOrderById( id.toString() );
+        }       
+        /*if ( dbOrder.total !== Number(data.response.body.quantity[0].amount.value) ) {
+            await db.disconnect();
+            return res.status(400).json({ message: 'Los montos de MercadoPago y nuestra orden no son iguales' });
+        }*/
+        //dbOrder.transactionId = transactionId;
     }
 
     return {
