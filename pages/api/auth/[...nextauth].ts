@@ -3,7 +3,8 @@ import GithubProvider from "next-auth/providers/github"
 import Credentials from "next-auth/providers/credentials"
 import { Token } from "@mui/icons-material"
 import { dbUsers } from "../../../database"
-//import GoogleProvider from "next-auth/providers/google";
+import Providers from 'next-auth/providers';
+import GoogleProvider from 'next-auth/providers/google';
 //import FacebookProvider from "next-auth/providers/facebook";
 
 export default NextAuth({
@@ -22,14 +23,10 @@ export default NextAuth({
                 credentials!.password);
         }
     }),
-    /*GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-    FacebookProvider({
-        clientId: process.env.FACEBOOK_CLIENT_ID,
-        clientSecret: process.env.FACEBOOK_CLIENT_SECRET
-    }),*/
+    GoogleProvider({
+        clientId: process.env.GOOGLE_ID || '',
+        clientSecret: process.env.GOOGLE_SECRET || '',
+      }),
     GithubProvider({
         clientId: process.env.GITHUB_ID,
         clientSecret: process.env.GITHUB_SECRET,
