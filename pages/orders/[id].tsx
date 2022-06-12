@@ -1,11 +1,11 @@
-import { Box, Card, CardContent, Chip, CircularProgress, Divider, Grid, Link, Typography } from '@mui/material'
+import { Box, Button, Card, CardContent, Chip, CircularProgress, Divider, Grid, Link, Typography } from '@mui/material'
 import { CreditCardOffOutlined, CreditScoreOutlined } from '@mui/icons-material';
 import { CartList, OrderSummary } from '../../components/cart'
 import { ShopLayout } from '../../components/layouts'
 import NextLink from 'next/link';
 import { GetServerSideProps, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
-import { dbOrders } from '../../database';
+import { db, dbOrders } from '../../database';
 import { IOrder } from '../../interfaces';
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import elBuenSaborApi from '../../api/elBuenSaborApi';
@@ -33,22 +33,36 @@ const OrderPage: NextPage<Props> = ({order}) => {
 
     const [isPaying, setIsPaying] = useState(false);
 
-    const onOrderCompleted = async( details: OrderResponseBody ) => {
+    const onOrderCompleted = async( details: IOrder ) => {
         
-        if ( details.status !== 'COMPLETED' ) {
-            return alert('No hay pago en Paypal');
-        }
-
+        /*if ( details.status !== 'COMPLETED' ) {
+            return alert('No hay pago en MercadoPago');
+        }*/
         setIsPaying(true);
+
+        let jsonToSend = {
+            ...details,
+            orderItems: order.orderItems.map(item => ({
+                ...item,
+                price: item.precio,
+            }))
+        };
+
 
         try {
             
             const { data } = await elBuenSaborApi.post(`/orders/pay`, {
-                transactionId: details.id,
-                orderId: order._id
+                thisUrl: `${process.env.NEXT_PUBLIC_URL}/orders/${details.id}`,
+                orderId: details._id,
+                transactionId: details.transactionId,
+                title: jsonToSend.orderItems.map(item => item.nombre).join(', '),
+                description: jsonToSend.orderItems.map(item => item.nombre).join(', '),
+                price: jsonToSend.orderItems.map(item => item.precio).reduce((a, b) => a + b, 0),
+                quantity: jsonToSend.orderItems.map(item => item.cantidad).reduce((a, b) => a + b, 0),
             });
 
-            router.reload();
+            router.replace(data.message);
+           // router.reload();
 
         } catch (error) {
             setIsPaying(false);
@@ -151,7 +165,7 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                                         icon={<CreditScoreOutlined />} 
                                                     />
                                                 )
-                                                : (
+                                                : /*(
                                                     <PayPalButtons 
                                                         createOrder={(data, actions) => {
                                                             return actions.order.create({
@@ -173,6 +187,19 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                                             });
                                                         }}
                                                     />
+                                                )*/
+                                                (
+                                                    <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
+                                                            <Button 
+                                                                color='secondary' 
+                                                                className='circular-btn' 
+                                                                fullWidth
+                                                                onClick={ () => { onOrderCompleted(order) } }
+                                                                //disabled={ isPaying }
+                                                            >
+                                                                Pagar orden
+                                                            </Button>                                                   
+                                                    </Box>
                                                 )
                                         }
                                     </Box>
@@ -189,7 +216,7 @@ const OrderPage: NextPage<Props> = ({order}) => {
 
 export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
 
-    const { id= '' } = query;
+    const { id= '', paid = '' } = query;
     const session:any = await getSession({req});
 
     if(!session) {
@@ -219,6 +246,13 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
                 permanent: false,
             }
         }
+    }
+
+    if(paid === 'true') {
+        order.isPaid = true;
+        await db.connect();
+        order.save();
+        await db.disconnect();
     }
 
     return {
