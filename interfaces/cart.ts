@@ -1,10 +1,11 @@
+import { IIngredientItem } from ".";
+
 export interface ICartProduct {
     _id: string;
     nombre: string;
-    imagenes: string;
+    imagen: string;
     precio: number;
-    costoEnvio: number;
-    inStock: number;
+    recipe: IIngredientItem[];
     slug: string;
     cantidad: number;
 }

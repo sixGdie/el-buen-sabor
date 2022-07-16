@@ -4,7 +4,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import { AdminLayout } from '../../components/layouts'
 import useSWR from 'swr';
-import { IUser } from '../../interfaces';
+import { IRole, IUser } from '../../interfaces';
 import { elBuenSaborApi } from '../../api';
 
 const UsersPage = () => {
@@ -24,7 +24,7 @@ const UsersPage = () => {
         return <></>
     }
 
-    const onRoleUpdated = async (userId: string, newRole: string) => {
+    const onRoleUpdated = async (userId: string, newRole: IRole) => {
 
         const previousUsers = users.map( user => ({...user}));
         const updatedUsers = users.map(user => ({
@@ -58,10 +58,11 @@ const UsersPage = () => {
                         onChange={ ({target}) => {onRoleUpdated(row.id, target.value)}}
                         sx={{widht: '300px'}}
                     >
-                        <MenuItem value='admin'>Admin</MenuItem>
-                        <MenuItem value='client'>Client</MenuItem>
-                        <MenuItem value='super-user'>Super User</MenuItem>
-                        <MenuItem value='SEO'>SEO</MenuItem>
+                        <MenuItem value='Admin'>Admin</MenuItem>
+                        <MenuItem value='User'>Client</MenuItem>
+                        <MenuItem value='Chef'>Chef</MenuItem>
+                        <MenuItem value='Delivery'>Delivery</MenuItem>
+                        <MenuItem value='Cashier'>Cashier</MenuItem>
                     </Select>
                 )
             },

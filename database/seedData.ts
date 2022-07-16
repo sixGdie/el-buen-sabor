@@ -2,26 +2,42 @@ import bcrypt from 'bcryptjs';
 
 interface SeedProduct {
     nombre: string;
-    rubro: ValidTypes;
     categoria: ValidCategories;
-    imagenes: string[];
+    imagen: string;
     precio: number;
-    costoEnvio: number;
     descripcion: string;
-    inStock: number;
+    estimatedTimeMinutes: number;
+    recipe: SeedIngredientItem[];
     slug: string;
-    tags: string;
+    active: boolean;
 }
 
 interface SeedUser {
     name: string;
     email: string;
     password: string;
-    role: 'admin'|'client';
+    role: 'Admin'|'User'|'Chef'|'Delivery'|'Cashier';
+}
+
+interface SeedIngredient {
+    nombre: string;
+    unidadMedida: ValidUnits;
+    categoria: ValidIngredientCategories;
+    costoUnidad: number;
+    inStock: number;
+    minStock: number;
+    slug: string;
+    active: boolean;
+}
+
+interface SeedIngredientItem {
+    ingrediente: SeedIngredient;
+    cantidad: number;
 }
 
 
-type ValidTypes = 'bebidas'|'comidas'|'promos';
+type ValidUnits = 'Kg'|'Lt'|'Gr'|'Unidad'|'Otro';
+type ValidIngredientCategories = 'bebida'|'lacteos'|'carne'|'panificados'|'vegetales'|'condimentos'|'otro';
 type ValidCategories = 'bebida'|'hamburguesa'|'pizza'|'pancho'|'guarnicion'|'lomo'|'otro';
 
 interface SeedData {
@@ -38,135 +54,271 @@ export const initialData: SeedData = {
             name: 'Juan Carlos BuenSabor',
             email: 'juanbuensabor@gmail.com',
             password: bcrypt.hashSync('123456'),
-            role: 'admin'
+            role: 'Admin'
         },
         {
             name: 'Alberto Gimenez',
             email: 'albertobuensabor@gmail.com',
             password: bcrypt.hashSync('123456'),
-            role: 'client'
+            role: 'User'
         },
     ],
     products: [
         {
             nombre: "Tarta de queso y vegetales",
-            rubro: 'comidas',
             categoria: 'otro',
-            imagenes: [
-                'nro1.jpeg',
-                'nro1-1.jpeg',
-            ],
+            imagen: 'nro1.jpeg',
             precio: 450,
-            costoEnvio: 100,
             descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
-            inStock: 7,
+            estimatedTimeMinutes: 15,
+            recipe: [
+                {
+                    ingrediente: {
+                        nombre: 'Queso',
+                        unidadMedida: 'Kg',
+                        categoria: 'lacteos',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'queso',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Tomate',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'tomate',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Cebolla',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'cebolla',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                }
+            ],
             slug: "tarta_vegetales_mediterraneo",
-            tags: 'tarta',
+            active: true,
         },
         {
-            nombre: "Pizza romana agridulce",
-            rubro: 'comidas',
-            categoria: 'pizza',
-            imagenes: [
-                'nro2.jpeg',
-                'nro2-1.jpeg',
-            ],
-            precio: 700,
-            costoEnvio: 100,
-            descripcion: "Una pizza distinta para quienes no tienen temor de Dios. Mezcla los sabores mediterraneos de siempre con crema y frutillas. El sabor del pecado, deshonor a la pizza.",
-            inStock: 7,
-            slug: "pizza_romana_agridulce",
-            tags: 'pizza_deshonor',
-        },
-        {
-            nombre: "Papas Fritas",
-            rubro: 'comidas',
-            categoria: 'guarnicion',
-            imagenes: [
-                'nro3.jpg',
-                'nro3-1.jpg',
-            ],
-            precio: 300,
-            costoEnvio: 100,
-            descripcion: "Papas fritas comunes, la opción que nunca falla, nunca decepciona.",
-            inStock: 7,
-            slug: "papas_fritas",
-            tags: 'papas',
-        },
-        {
-            nombre: "Combo papas con barbacoa",
-            rubro: 'promos',
-            categoria: 'guarnicion',
-            imagenes: [
-                'nro4.jpeg',
-                'nro4-1.jpeg',
-            ],
-            precio: 400,
-            costoEnvio: 100,
-            descripcion: "Papas fritas con verdeo y perejil acompañas de dip de salsa barbacoa. Para el gourmet de barrio.",
-            inStock: 7,
-            slug: "combo_papas_barbacoa",
-            tags: 'papas',
-        },
-        {
-            nombre: "Pizza romana",
-            rubro: 'comidas',
-            categoria: 'pizza',
-            imagenes: [
-                'nro5.jpeg',
-                'nro5-1.jpeg',
-            ],
-            precio: 650,
-            costoEnvio: 100,
-            descripcion: "Pizza romana mediterránea clásica. Mozzarella, tomate cherry y albahaca. Al fin comida de verdad.",
-            inStock: 7,
-            slug: "pizza_romana",
-            tags: 'pizza',
-        },
-        {
-            nombre: "Picada",
-            rubro: 'comidas',
+            nombre: "Tarta de queso y vegetales",
             categoria: 'otro',
-            imagenes: [
-                'nro6.jpeg',
-                'nro6-1.jpeg',
+            imagen: 'nro1.jpeg',
+            precio: 450,
+            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            estimatedTimeMinutes: 15,
+            recipe: [
+                {
+                    ingrediente: {
+                        nombre: 'Queso',
+                        unidadMedida: 'Kg',
+                        categoria: 'lacteos',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'queso',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Tomate',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'tomate',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Cebolla',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'cebolla',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                }
             ],
-            precio: 500,
-            costoEnvio: 100,
-            descripcion: "Picada simple de embutidos y aceitunas. Bebida no incluída.",
-            inStock: 7,
-            slug: "picada",
-            tags: 'picada',
+            slug: "tarta_vegetales_mediterraneo",
+            active: true,
         },
         {
-            nombre: "Hamburguesa bacon con fritas",
-            rubro: 'promos',
-            categoria: 'hamburguesa',
-            imagenes: [
-                'nro7.jpeg',
-                'nro7-1.jpeg',
+            nombre: "Tarta de queso y vegetales",
+            categoria: 'otro',
+            imagen: 'nro1.jpeg',
+            precio: 450,
+            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            estimatedTimeMinutes: 15,
+            recipe: [
+                {
+                    ingrediente: {
+                        nombre: 'Queso',
+                        unidadMedida: 'Kg',
+                        categoria: 'lacteos',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'queso',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Tomate',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'tomate',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Cebolla',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'cebolla',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                }
             ],
-            precio: 700,
-            costoEnvio: 100,
-            descripcion: "Hamburguesa con bacon frito y guarnición de papas fritas.",
-            inStock: 7,
-            slug: "hamburguesa_bacon_fritas",
-            tags: 'hamburguesa',
+            slug: "tarta_vegetales_mediterraneo",
+            active: true,
         },
         {
-            nombre: "Hamburguesa con queso y fritas",
-            rubro: 'promos',
-            categoria: 'hamburguesa',
-            imagenes: [
-                'nro8.jpeg',
-                'nro8-1.jpeg',
+            nombre: "Tarta de queso y vegetales",
+            categoria: 'otro',
+            imagen: 'nro1.jpeg',
+            precio: 450,
+            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            estimatedTimeMinutes: 15,
+            recipe: [
+                {
+                    ingrediente: {
+                        nombre: 'Queso',
+                        unidadMedida: 'Kg',
+                        categoria: 'lacteos',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'queso',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Tomate',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'tomate',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Cebolla',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'cebolla',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                }
             ],
-            precio: 650,
-            costoEnvio: 100,
-            descripcion: "Hamburguesa con queso y guarnición de papas fritas.",
-            inStock: 7,
-            slug: "hamburguesa_queso_fritas",
-            tags: 'hamburguesa',
-        },    
+            slug: "tarta_vegetales_mediterraneo",
+            active: true,
+        },
+        {
+            nombre: "Tarta de queso y vegetales",
+            categoria: 'otro',
+            imagen: 'nro1.jpeg',
+            precio: 450,
+            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            estimatedTimeMinutes: 15,
+            recipe: [
+                {
+                    ingrediente: {
+                        nombre: 'Queso',
+                        unidadMedida: 'Kg',
+                        categoria: 'lacteos',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'queso',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Tomate',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'tomate',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                },
+                {
+                    ingrediente: {
+                        nombre: 'Cebolla',
+                        unidadMedida: 'Kg',
+                        categoria: 'vegetales',
+                        costoUnidad: 1.5,
+                        inStock: 10,
+                        minStock: 5,
+                        slug: 'cebolla',
+                        active: true,
+                    },
+                    cantidad: 1.5,
+                }
+            ],
+            slug: "tarta_vegetales_mediterraneo",
+            active: true,
+        },
+            
     ]
 }

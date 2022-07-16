@@ -2,6 +2,7 @@ import { FC, useMemo, useState } from "react";
 import NextLink from "next/link";
 import { Box, Card, CardActionArea, CardMedia, Chip, Grid, Link, Typography } from "@mui/material";
 import { IProduct } from "../../interfaces";
+import { utils } from "../../utils";
 
 interface Props {
     product: IProduct
@@ -11,13 +12,12 @@ export const ProductCard: FC<Props> = ({product}) => {
 
     const [isHovered, setIsHovered] = useState(false)
     const [isImageLoaded, setIsImageLoaded] = useState(false)
-
-    const productImage = useMemo(() => {
-        return isHovered 
-        ? product.imagenes[1] 
-        : product.imagenes[0];
-    }, [isHovered, product.imagenes])
-
+    const hasStock = (): number => {
+        utils.getStock(product).then(res => {
+            return res; //TODO: Revisar
+        });
+        return 0;
+    }
     return (
         <Grid item 
                 xs={6} 
@@ -30,7 +30,7 @@ export const ProductCard: FC<Props> = ({product}) => {
                     <Link>
                         <CardActionArea>
                             {
-                                (product.inStock === 0) && (
+                                (hasStock() === 0) && (
                                     <Chip
                                         color='primary'
                                         label='Sin stock'
@@ -42,7 +42,7 @@ export const ProductCard: FC<Props> = ({product}) => {
                             <CardMedia
                                 component='img'
                                 className='fadeIn'
-                                image={ productImage }
+                                image={ product.imagen }
                                 alt={ product.nombre }
                                 onLoad={() => setIsImageLoaded(true)}
                             />

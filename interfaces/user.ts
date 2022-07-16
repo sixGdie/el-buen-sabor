@@ -4,8 +4,10 @@ export interface IUser {
     name: string;
     email: string;
     password?: string;
-    role: string;
+    role: IRole;
 
     createdAt?: string;
     updatedAt?: string;
 }
+
+export type IRole = 'Admin'|'User'|'Chef'|'Delivery'|'Cashier';

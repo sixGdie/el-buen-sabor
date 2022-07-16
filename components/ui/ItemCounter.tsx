@@ -4,7 +4,7 @@ import { AddCircleOutline, RemoveCircleOutline } from "@mui/icons-material"
 
 interface Props {
   currentValue: number;
-  maxValue: number;
+  maxValue: any;
 
   updatedQuantity: (newValue: number) => void;
 }

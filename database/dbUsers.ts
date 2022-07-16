@@ -32,7 +32,7 @@ export const oAuthCreateOrLoginUser = async (oAuthEmail: string, oAuthName: stri
         return { _id, name, email, role };
     }
 
-    const newUser = new User({ email: oAuthEmail, name: oAuthName, password: '@', role: 'client' });
+    const newUser = new User({ email: oAuthEmail, name: oAuthName, password: '@', role: 'User' });
     await newUser.save();
     await db.disconnect();
 

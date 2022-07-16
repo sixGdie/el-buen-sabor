@@ -1,18 +1,23 @@
+import { IIngredient } from "./";
+
 export interface IProduct {
     _id: string;
     nombre: string;
-    rubro: ITypes;
     categoria: ICategories;
-    imagenes: string[];
+    imagen: string;
     precio: number;
-    costoEnvio: number;
     descripcion: string;
-    inStock: number;
+    estimatedTimeMinutes: number;
+    recipe: IIngredientItem[];
     slug: string;
-    tags: string[];
+    active: boolean;
     createdAt: string;
     updatedAt: string;
 }
 
-export type ITypes = 'bebidas'|'comidas'|'promos';
+export interface IIngredientItem {
+    ingrediente: IIngredient;
+    cantidad: number;
+}
+
 export type ICategories = 'bebida'|'hamburguesa'|'pizza'|'pancho'|'guarnicion'|'lomo'|'otro';

@@ -8,6 +8,7 @@ import { ItemCounter } from '../../components/ui';
 import { dbProducts } from '../../database';
 import { ICartProduct, IProduct } from '../../interfaces';
 import { CartContext } from '../../context/cart/CartContext';
+import { utils } from '../../utils';
 
 interface Props {
   product: IProduct;
@@ -21,10 +22,9 @@ const ProductPage:NextPage<Props> = ({product}) => {
   const [tempCartProduct, setTempCartProduct] = useState<ICartProduct>({
     _id: product._id,
     nombre: product.nombre,
-    imagenes: product.imagenes[0],
+    imagen: product.imagen,
     precio: product.precio,
-    costoEnvio: product.costoEnvio,
-    inStock: product.inStock,
+    recipe: product.recipe,
     slug: product.slug,
     cantidad: 1,
   })
@@ -36,6 +36,13 @@ const ProductPage:NextPage<Props> = ({product}) => {
     }))
   }
 
+  const hasStock = (): number => {
+    utils.getStock(product).then(res => {
+        return res; //TODO: Revisar
+    });
+    return 0;
+}
+
   const onAddProduct = () => {
     addProductToCard(tempCartProduct);
     router.push('/cart');
@@ -46,7 +53,7 @@ const ProductPage:NextPage<Props> = ({product}) => {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={7}>
           <ProductSlideshow
-            imagenes={ product.imagenes }
+            imagen={ product.imagen }
           />
         </Grid>
 
@@ -60,11 +67,11 @@ const ProductPage:NextPage<Props> = ({product}) => {
               <ItemCounter
                 currentValue={tempCartProduct.cantidad}
                 updatedQuantity={onUpdateQuantity}
-                maxValue={product.inStock}
+                maxValue={hasStock}
               />
             </Box>    
             {
-              (product.inStock > 0)
+              (hasStock() > 0)
                 ? (
                   <Button 
                     color="secondary" 

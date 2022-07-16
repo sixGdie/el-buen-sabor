@@ -13,6 +13,8 @@ import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Order } from '../../models';
 
+//TODO: Ver la lógica para pagar en el local
+//TODO: Ver la lógica del descuento
 export type OrderResponseBody = {
     id: string;
     status:

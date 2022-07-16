@@ -175,7 +175,7 @@ export const SideMenu = () => {
                     }                  
 
                     {
-                        user?.role === 'admin' && (
+                        user?.role === 'Admin' && (
                             <>
 
                                 <Divider />

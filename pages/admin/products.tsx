@@ -53,12 +53,12 @@ const ProductsPage = () => {
 
     const rows = (data! || []).map(product => ({
         id: product._id,
-        img: product.imagenes[0],
+        img: product.imagen,
         title: product.nombre,
         category: product.categoria,
-        inStock: product.inStock,
         price: product.precio,
         slug: product.slug
+        //TODO: Hacer la lógica para agregar ingredientes y los otros valores que faltan en el form
     }));
 
     return (

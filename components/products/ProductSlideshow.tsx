@@ -4,30 +4,24 @@ import 'react-slideshow-image/dist/styles.css';
 import styles from "./ProductSlideshow.module.css";
 
 interface Props {
-    imagenes: string[];
+    imagen: string;
 }
 
-export const ProductSlideshow: FC<Props> = ({ imagenes }) => {
+export const ProductSlideshow: FC<Props> = ({ imagen }) => {
   return (
     <Slide
         easing="ease"
         duration={7000}
         indicators
     >
-        {
-            imagenes.map(imagen => {
-                return (
-                    <div className={ styles['each-slide'] } key={ imagen }>
-                        <div style={{
-                            backgroundImage: `url(${ imagen })`,
-                            backgroundSize: 'cover'
-                        }}>
-                            
-                        </div>
-                    </div>
-                )
-            })
-        }
+        <div className={ styles['each-slide'] } key={ imagen }>
+            <div style={{
+                backgroundImage: `url(${ imagen })`,
+                backgroundSize: 'cover'
+            }}>
+                
+            </div>
+        </div>
     </Slide>
   )
 }

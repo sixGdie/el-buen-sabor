@@ -1,4 +1,4 @@
-import { IUser } from "./";
+import { IIngredientItem, IUser } from "./";
 
 export interface IOrder {
     [x: string]: any;
@@ -11,6 +11,8 @@ export interface IOrder {
     subTotal: number;
     tax: number;
     total: number;
+    currentState: IOrderState;
+    paidMethod: IPaymentMethod;
     isPaid: boolean;
     paidAt?: string;
     transactionId?: string;
@@ -18,14 +20,17 @@ export interface IOrder {
     createdAt?: string;
 }
 
+export type IOrderState = 'Ingresado'|'En Cocina'|'En delivery'|'Entregado'|'Cancelado';
+
+export type IPaymentMethod = 'MercadoPago'|'Efectivo';
+
 export interface IOrderItem {
     _id: string;
     nombre: string;
     cantidad: number;
     slug: string;
-    imagenes: string;
+    imagen: string;
     precio: number;
-    inStock: number;
 }
 
 export interface SendAddress {

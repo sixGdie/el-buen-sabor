@@ -41,9 +41,9 @@ const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     await db.disconnect();
 
     const updatedProducts = products.map(product => {
-        product.imagenes = product.imagenes.map(img => {
-            return img.includes('http') ? img : `${process.env.HOST_NAME}products/${img}`;
-        });
+        product.imagen = product.imagen.includes('http') 
+         ? product.imagen 
+        : `${process.env.HOST_NAME}products/${product.imagen}`;
 
         return product;
     });
@@ -53,15 +53,15 @@ const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 }
 const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     
-    const {_id = '', imagenes = []} = req.body as IProduct;
+    const {_id = '', imagen = ''} = req.body as IProduct;
 
     if (!isValidObjectId(_id)){
         return res.status(400).json({ message: 'Id no válido' });
     }
 
-    if(imagenes.length < 2){
-        return res.status(400).json({ message: 'Debe incluir al menos 2 imagenes' });
-    }
+    if(imagen.length < 0){
+        return res.status(400).json({ message: 'Debe incluir al menos 1 imagen' });
+    } //TODO: Ver qué hacer con esto
 
     try {
         await db.connect();
@@ -71,12 +71,12 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
             return res.status(400).json({ message: 'Producto no encontrado' });
         }
 
-        product.imagenes.forEach( async(image) => {
-            if(!imagenes.includes(image)){
-                const [fileId, extension] = image.substring(image.lastIndexOf('/' + 1)).split('.');
+        //product.imagenes.forEach( async(image) => {
+            if(!imagen){
+                const [fileId, extension] = imagen.substring(imagen.lastIndexOf('/' + 1)).split('.');
                 await cloudinary.uploader.destroy(fileId);
-            }
-        });
+       //     }
+        }; //TODO Revisar esto
             
 
         await product.update( req.body );
@@ -97,11 +97,11 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
 
 const createProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     
-    const { imagenes = [] } = req.body as IProduct;
+    const { imagen = '' } = req.body as IProduct;
 
-    if (imagenes.length < 2){
-        return res.status(400).json({ message: 'Debe incluir al menos 2 imagenes' });
-    }
+    if(imagen.length < 0){
+        return res.status(400).json({ message: 'Debe incluir al menos 1 imagen' });
+    } //TODO: Ver qué hacer con esto
 
     try {
         await db.connect();

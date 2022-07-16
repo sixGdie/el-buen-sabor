@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FC, useEffect, useReducer } from 'react';
-import { ICartProduct, IOrder, SendAddress } from '../../interfaces';
+import { ICartProduct, IOrder, IOrderState, IPaymentMethod, SendAddress } from '../../interfaces';
 import { CartContext, cartReducer } from './';
 import Cookies from 'js-cookie';
 import { elBuenSaborApi } from '../../api';
@@ -13,6 +13,8 @@ export interface CartState {
     subTotal: number;
     tax: number;
     total: number;
+    currentState: IOrderState;
+    paidMethod: IPaymentMethod;
     sendAddress?: SendAddress;
 }
 
@@ -27,9 +29,12 @@ const CART_INITIAL_STATE: CartState = {
     subTotal: 0,
     tax: 0,
     total: 0,
+    currentState: 'Ingresado',
+    paidMethod: 'MercadoPago',
     sendAddress: undefined,
 }
 
+//TODO: Cambiar el estado del pedido
 
 export const CartProvider:FC<Props> = ({ children }) => {
 
@@ -134,6 +139,8 @@ export const CartProvider:FC<Props> = ({ children }) => {
             sendAddress: state.sendAddress,
             numberOfItems: state.numberOfItems,
             subTotal: state.subTotal,
+            currentState: state.currentState,
+            paidMethod: state.paidMethod,
             tax: state.tax,
             total: state.total,
             isPaid: false,

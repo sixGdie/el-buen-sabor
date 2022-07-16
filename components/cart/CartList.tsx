@@ -4,7 +4,9 @@ import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '
 import { ItemCounter } from '../ui';
 import { CartContext } from '../../context';
 import { ICartProduct, IOrderItem } from '../../interfaces';
-import { currency } from '../../utils';
+import { currency, utils } from '../../utils';
+import { dbIngredients } from '../../database';
+import { IIngredient } from '../../interfaces/ingredient';
 
 interface Props {
     editable?: boolean;
@@ -32,7 +34,7 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
                             <Link>
                                 <CardActionArea>
                                     <CardMedia
-                                        image={ product.imagenes }
+                                        image={ product.imagen }
                                         component="img"
                                         sx={{borderRadius: '5px'}}
                                     />
@@ -48,7 +50,7 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
                                 ? (
                                     <ItemCounter 
                                         currentValue={product.cantidad} 
-                                        maxValue={product.inStock} 
+                                        maxValue={utils.getStock(product as ICartProduct)} //TODO: Revisar
                                         updatedQuantity={ (newValue) => {
                                             onNewCartQuantityValue(product as ICartProduct, newValue)
                                         }}
@@ -74,7 +76,7 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
                                     onClick={() => removeCartProduct(product as ICartProduct)}
                                 >
                                     Remover
-                                </Button>
+                                </Button> 
                             )
                         }
                     </Grid>

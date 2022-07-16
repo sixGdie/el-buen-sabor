@@ -8,7 +8,7 @@ const orderSchema = new Schema({
         nombre: {type: String, required: true},
         cantidad: {type: Number, required: true},
         slug: {type: String, required: true},
-        imagenes: {type: String, required: true},
+        imagen: {type: String, required: true},
         precio: {type: Number, required: true},
     }],
     sendAddress: {
@@ -26,6 +26,12 @@ const orderSchema = new Schema({
     tax: {type: Number, required: true},
     total: {type: Number, required: true},
 
+    paidMethod: [{
+        type: String,
+        enum: ['MercadoPago', 'Efectivo'],
+        message: 'La categoria debe ser una de las siguientes: MercadoPago, Efectivo',    
+        default: 'MercadoPago'
+    }],
     isPaid: {type: Boolean, required: true, default: false},
     paidAt: {type: String },
 

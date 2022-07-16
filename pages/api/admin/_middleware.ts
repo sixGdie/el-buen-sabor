@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest, ev: NextFetchEvent) {
         });
     }
 
-    const validRoles = ['admin', 'super-user', 'SEO'];
+    const validRoles = ['Admin', 'Chef', 'Cashier', 'Delivery'];
 
     if(!validRoles.includes(session.user.role)){
         return new Response( JSON.stringify({ 

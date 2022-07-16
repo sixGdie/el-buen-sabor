@@ -18,9 +18,9 @@ export const getProductBySlug =async (slug: string): Promise<IProduct | null> =>
         return null;
     }
 
-    product.imagenes = product.imagenes.map(img => {
-        return img.includes('http') ? img : `${process.env.HOST_NAME}products/${img}`;
-    });
+    product.imagen = product.imagen.includes('http') 
+    ? product.imagen 
+    : `${process.env.HOST_NAME}products/${product.imagen}`;
 
     return JSON.parse(JSON.stringify(product));
 }
@@ -47,15 +47,15 @@ export const getProductsByTerm =async (term: string): Promise<IProduct[]> => {
     const products = await Product.find({ 
         $text: { $search: term }
     })
-    .select('nombre imagenes precio inStock slug -_id')
+    .select('nombre imagen precio inStock slug -_id')
     .lean();
 
     await db.disconnect();
 
     const updatedProducts = products.map(product => {
-        product.imagenes = product.imagenes.map(img => {
-            return img.includes('http') ? img : `${process.env.HOST_NAME}products/${img}`;
-        });
+        product.imagen = product.imagen.includes('http') 
+         ? product.imagen 
+        : `${process.env.HOST_NAME}products/${product.imagen}`;
 
         return product;
     });
@@ -72,9 +72,9 @@ export const getAllProducts = async (): Promise<IProduct[]> => {
     await db.disconnect();
 
     const updatedProducts = products.map(product => {
-        product.imagenes = product.imagenes.map(img => {
-            return img.includes('http') ? img : `${process.env.HOST_NAME}products/${img}`;
-        });
+        product.imagen = product.imagen.includes('http') 
+         ? product.imagen 
+        : `${process.env.HOST_NAME}products/${product.imagen}`;
 
         return product;
     });
