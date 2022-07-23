@@ -12,6 +12,7 @@ interface SeedProduct {
     active: boolean;
 }
 
+
 interface SeedUser {
     name: string;
     email: string;
@@ -31,7 +32,7 @@ interface SeedIngredient {
 }
 
 interface SeedIngredientItem {
-    ingrediente: SeedIngredient;
+    ingrediente: string;
     cantidad: number;
 }
 
@@ -43,12 +44,55 @@ type ValidCategories = 'bebida'|'hamburguesa'|'pizza'|'pancho'|'guarnicion'|'lom
 interface SeedData {
     users: SeedUser[];
     products: SeedProduct[],
+    ingredients: SeedIngredient[];
 }
 
 
 
 
 export const initialData: SeedData = {
+    ingredients: [
+        {
+            nombre: 'Aceite de Oliva',
+            unidadMedida: 'Lt',
+            categoria: 'bebida',
+            costoUnidad: 0.5,
+            inStock: 100,
+            minStock: 10,
+            slug: 'aceite-de-oliva',
+            active: true,
+        },
+        {
+            nombre: 'Queso',
+            unidadMedida: 'Gr',
+            categoria: 'lacteos',
+            costoUnidad: 0.5,
+            inStock: 100,
+            minStock: 10,
+            slug: 'queso',
+            active: true,
+        },
+        {
+            nombre: 'Tomate',
+            unidadMedida: 'Gr',
+            categoria: 'vegetales',
+            costoUnidad: 0.5,
+            inStock: 100,
+            minStock: 10,
+            slug: 'tomate',
+            active: true,
+        },
+        {
+            nombre: 'Cebolla',
+            unidadMedida: 'Gr',
+            categoria: 'vegetales',
+            costoUnidad: 0.5,
+            inStock: 100,
+            minStock: 10,
+            slug: 'cebolla',
+            active: true,
+        },
+    ],
     users: [
         {
             name: 'Juan Carlos BuenSabor',
@@ -73,250 +117,119 @@ export const initialData: SeedData = {
             estimatedTimeMinutes: 15,
             recipe: [
                 {
-                    ingrediente: {
-                        nombre: 'Queso',
-                        unidadMedida: 'Kg',
-                        categoria: 'lacteos',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'queso',
-                        active: true,
-                    },
-                    cantidad: 1.5,
+                    ingrediente: 'Aceite de Oliva',
+                    cantidad: 1,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Tomate',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'tomate',
-                        active: true,
-                    },
-                    cantidad: 1.5,
+                    ingrediente: 'Queso',
+                    cantidad: 1,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Cebolla',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'cebolla',
-                        active: true,
-                    },
-                    cantidad: 1.5,
-                }
+                    ingrediente: 'Tomate',
+                    cantidad: 1,
+                },
+                {
+                    ingrediente: 'Cebolla',
+                    cantidad: 1,
+                },
             ],
-            slug: "tarta_vegetales_mediterraneo",
+            slug: "tarta_vegetales_mediterraneo1",
             active: true,
         },
         {
-            nombre: "Tarta de queso y vegetales",
-            categoria: 'otro',
-            imagen: 'nro1.jpeg',
+            nombre: "Pizza margarita",
+            categoria: 'pizza',
+            imagen: 'nro2.jpeg',
             precio: 450,
-            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            descripcion: "El clásico de queso y carne molida",
             estimatedTimeMinutes: 15,
             recipe: [
                 {
-                    ingrediente: {
-                        nombre: 'Queso',
-                        unidadMedida: 'Kg',
-                        categoria: 'lacteos',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'queso',
-                        active: true,
-                    },
+                    ingrediente: 'Queso',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Tomate',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'tomate',
-                        active: true,
-                    },
+                    ingrediente: 'Tomate',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Cebolla',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'cebolla',
-                        active: true,
-                    },
+                    ingrediente: 'Cebolla',
                     cantidad: 1.5,
                 }
             ],
-            slug: "tarta_vegetales_mediterraneo",
+            slug: "pizza_margarita1",
             active: true,
         },
         {
-            nombre: "Tarta de queso y vegetales",
-            categoria: 'otro',
-            imagen: 'nro1.jpeg',
+            nombre: "Hamburguesa de queso",
+            categoria: 'hamburguesa',
+            imagen: 'nro3.jpeg',
             precio: 450,
-            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            descripcion: "RRRRica hamburguesa de queso",
             estimatedTimeMinutes: 15,
             recipe: [
                 {
-                    ingrediente: {
-                        nombre: 'Queso',
-                        unidadMedida: 'Kg',
-                        categoria: 'lacteos',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'queso',
-                        active: true,
-                    },
+                    ingrediente: 'Queso',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Tomate',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'tomate',
-                        active: true,
-                    },
+                    ingrediente: 'Tomate',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Cebolla',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'cebolla',
-                        active: true,
-                    },
+                    ingrediente: 'Cebolla',
                     cantidad: 1.5,
                 }
             ],
-            slug: "tarta_vegetales_mediterraneo",
+            slug: "hamburguesa_queso1",
             active: true,
         },
         {
-            nombre: "Tarta de queso y vegetales",
-            categoria: 'otro',
-            imagen: 'nro1.jpeg',
+            nombre: "Pancho",
+            categoria: 'pancho',
+            imagen: 'nro4.jpeg',
             precio: 450,
-            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            descripcion: "La comida de la verguenza",
             estimatedTimeMinutes: 15,
             recipe: [
                 {
-                    ingrediente: {
-                        nombre: 'Queso',
-                        unidadMedida: 'Kg',
-                        categoria: 'lacteos',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'queso',
-                        active: true,
-                    },
+                    ingrediente: 'Queso',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Tomate',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'tomate',
-                        active: true,
-                    },
+                    ingrediente: 'Tomate',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Cebolla',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'cebolla',
-                        active: true,
-                    },
+                    ingrediente: 'Cebolla',
                     cantidad: 1.5,
                 }
             ],
-            slug: "tarta_vegetales_mediterraneo",
+            slug: "pancho1",
             active: true,
         },
         {
-            nombre: "Tarta de queso y vegetales",
-            categoria: 'otro',
-            imagen: 'nro1.jpeg',
+            nombre: "papas fritas",
+            categoria: 'guarnicion',
+            imagen: 'nro5.jpeg',
             precio: 450,
-            descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
+            descripcion: "Papas fritas con queso",
             estimatedTimeMinutes: 15,
             recipe: [
                 {
-                    ingrediente: {
-                        nombre: 'Queso',
-                        unidadMedida: 'Kg',
-                        categoria: 'lacteos',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'queso',
-                        active: true,
-                    },
+                    ingrediente: 'Queso',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Tomate',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'tomate',
-                        active: true,
-                    },
+                    ingrediente: 'Tomate',
                     cantidad: 1.5,
                 },
                 {
-                    ingrediente: {
-                        nombre: 'Cebolla',
-                        unidadMedida: 'Kg',
-                        categoria: 'vegetales',
-                        costoUnidad: 1.5,
-                        inStock: 10,
-                        minStock: 5,
-                        slug: 'cebolla',
-                        active: true,
-                    },
+                    ingrediente: 'Cebolla',
                     cantidad: 1.5,
                 }
             ],
-            slug: "tarta_vegetales_mediterraneo",
+            slug: "papas_fritas1",
             active: true,
         },
             

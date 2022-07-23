@@ -9,14 +9,14 @@ const productSchema: Schema = new Schema({
         message: 'La categoria debe ser una de las siguientes: bebida, hamburguesa, pizza, pancho, guarnicion, lomo, otro',    
         default: 'pizza'
     }],
-    imagen: [{ type: String, default: '' }],
+    imagen: { type: String, default: '' },
     precio: { type: Number, required: true, default: 0 },
     descripcion: { type: String, required: true, default: '' },
     slug: { type: String, required: true, unique: true },
     estimatedTimeMinutes: { type: Number, required: true, default: 0 },
-    ingredients: [{
-        ingrediente: { type: Schema.Types.ObjectId, ref: 'Ingredient', required: true },
-        cantidad: { type: Number, required: true, default: 0 },
+    recipe: [{
+        ingrediente: { type: String, required: true, default: '' },
+        cantidad: { type: Number, required: true, default: 0 }
     }],
     active: { type: Boolean, required: true, default: true },
 }, { 

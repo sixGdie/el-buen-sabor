@@ -26,6 +26,6 @@ const ingredientSchema: Schema = new Schema({
 
 ingredientSchema.index({ nombre: 'text', tags: 'text' });
 
-const Ingredient: Model<IIngredient> = mongoose.models.Product || model('Ingredient', ingredientSchema);
+const Ingredient: Model<IIngredient> = mongoose.models.Ingredient || model('Ingredient', ingredientSchema);
 
 export default Ingredient;

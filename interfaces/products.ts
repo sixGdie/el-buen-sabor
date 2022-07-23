@@ -1,4 +1,3 @@
-import { IIngredient } from "./";
 
 export interface IProduct {
     _id: string;
@@ -8,7 +7,10 @@ export interface IProduct {
     precio: number;
     descripcion: string;
     estimatedTimeMinutes: number;
-    recipe: IIngredientItem[];
+    recipe: [{
+        ingrediente: string;
+        cantidad: number;
+    }];
     slug: string;
     active: boolean;
     createdAt: string;
@@ -16,7 +18,7 @@ export interface IProduct {
 }
 
 export interface IIngredientItem {
-    ingrediente: IIngredient;
+    ingrediente: string;
     cantidad: number;
 }
 

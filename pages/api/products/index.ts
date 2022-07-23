@@ -36,10 +36,11 @@ const getProducts = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     console.log(condition);
     await db.connect();
 
-    const products = await Product.find(condition)
-                                .select('nombre imagenes precio inStock slug -_id')
+    const products: IProduct[] = await Product.find(condition)
+                                .select('nombre imagen precio slug -_id')
                                 .lean();
 
+                                console.log(products);
     await db.disconnect();
 
     const updatedProducts = products.map(product => {

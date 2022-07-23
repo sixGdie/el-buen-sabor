@@ -44,10 +44,10 @@ export const getProductsByTerm =async (term: string): Promise<IProduct[]> => {
 
     await db.connect();
 
-    const products = await Product.find({ 
+    const products: IProduct[] = await Product.find({ 
         $text: { $search: term }
     })
-    .select('nombre imagen precio inStock slug -_id')
+    .select('nombre imagen precio slug -_id')
     .lean();
 
     await db.disconnect();
@@ -58,7 +58,7 @@ export const getProductsByTerm =async (term: string): Promise<IProduct[]> => {
         : `${process.env.HOST_NAME}products/${product.imagen}`;
 
         return product;
-    });
+    }); 
 
     return updatedProducts;
 }
