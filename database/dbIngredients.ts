@@ -33,3 +33,18 @@ export const getAllIngredients =async (): Promise<IIngredient[]> => {
 
     return ingredients;
 }
+
+export const getIngredientBySlug =async (slug: string): Promise<IIngredient | null> => {
+    
+    await db.connect();
+
+    const ingredient = await Ingredient.findOne({ slug }).lean(); 
+
+    await db.disconnect();
+
+    if (!ingredient) {
+        return null;
+    }
+
+    return JSON.parse(JSON.stringify(ingredient));
+}

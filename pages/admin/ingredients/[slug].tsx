@@ -1,13 +1,13 @@
 import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import { GetServerSideProps } from 'next'
 import { AdminLayout } from '../../../components/layouts'
-import { ICategories, IProduct } from '../../../interfaces';
+import { ICategories, IIngredient, IIngredientCategories, IProduct, IUnit } from '../../../interfaces';
 import { DriveFileRenameOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material';
-import { dbProducts } from '../../../database';
+import { dbIngredients, dbProducts } from '../../../database';
 import { Box, Button, capitalize, Card, CardActions, CardMedia, Checkbox, Chip, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, ListItem, Paper, Radio, RadioGroup, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { elBuenSaborApi } from '../../../api';
-import { Product } from '../../../models';
+import { Ingredient, Product } from '../../../models';
 import { useRouter } from 'next/router';
 
 
@@ -16,27 +16,26 @@ const validCaterogies  = ['bebida', 'hamburguesa', 'pizza', 'pancho', 'guarnicio
 interface FormData {
     _id: string;
     nombre: string;
-    categoria: ICategories;
-    imagen: string;
-    precio: number;
-    descripcion: string;
-    estimatedTimeMinutes: number;
-    recipe: [string, number][];
+    unidadMedida: IUnit;
+    categoria: IIngredientCategories;
+    costoUnidad: number;
+    inStock: number;
+    minStock: number;
     slug: string;
     active: boolean;
 }
 
 interface Props {
-    product: IProduct;
+    product: IIngredient;
 }
 
-const ProductAdminPage:FC<Props> = ({ product }) => {
+const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
 
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [isSaving, setIsSaving] = useState(false);
     const { register, handleSubmit, formState:{errors}, getValues, setValue, watch} = useForm({
-        defaultValues: product
+        defaultValues: ingredient
     })
 
     useEffect(() => {
@@ -54,54 +53,20 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
         return () => subscription.unsubscribe();
     }, [watch, setValue]);
 
-    const onFilesSelected = async ({ target }: ChangeEvent<HTMLInputElement>) => {
-        if ( !target.files || target.files.length === 0 ) return;
-
-        
-        try {
-            
-            for ( const file of target.files){
-                
-                const formData = new FormData();
-                formData.append('file', file);
-                const { data } = 
-                    await elBuenSaborApi
-                        .post<{message:string}>('/admin/upload', formData);
-                setValue(
-                    'imagen', 
-                    [...getValues('imagen'), data.message], 
-                    { shouldValidate: true }); 
-            }
-
-        } catch (error) {
-            
-        }
-    }
-
-    const onDeleteImage = (image:string) => {
-        setValue(
-            'imagen', 
-            getValues('imagen'),
-            { shouldValidate: true });
-    }
-
     const onSubmitForm = async ( form: FormData ) => {
-        if( form.imagen.length < 2 ){
-            return;
-        }
             
         setIsSaving(true);
 
         try {
             
             const {data} = await elBuenSaborApi({
-                url: '/admin/products',
+                url: '/admin/ingredients',
                 method: form._id ? 'PUT' : 'POST',
                 data: form
             })
 
             if( !form._id ){
-                router.replace(`/admin/products/${form.slug}`);
+                router.replace(`/admin/ingredients/${form.slug}`);
             } else {
                 setIsSaving(false);
             }
@@ -115,7 +80,7 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
     return (
         <AdminLayout 
             title={'Producto'} 
-            subTitle={`Editando: ${ product.nombre }`}
+            subTitle={`Editando: ${ ingredient.nombre }`}
             icon={ <DriveFileRenameOutline /> }
         >
             <form onSubmit={handleSubmit(onSubmitForm)}>
@@ -149,21 +114,7 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                         />
 
                         <TextField
-                            label="Descripción"
-                            variant="filled"
-                            fullWidth 
-                            multiline
-                            sx={{ mb: 1 }}
-                            { ...register('descripcion', {
-                                required: 'Este campo es requerido',
-                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
-                            })}
-                            error={ !!errors.descripcion }
-                            helperText={ errors.descripcion?.message }
-                        />
-
-                        {/*<TextField
-                            label="Inventario"
+                            label="Stock actual"
                             type='number'
                             variant="filled"
                             fullWidth 
@@ -174,21 +125,57 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                             })}
                             error={ !!errors.inStock }
                             helperText={ errors.inStock?.message }
-                        />*/}
-                        
+                        />
+
                         <TextField
-                            label="Precio"
+                            label="Stock mínimo"
                             type='number'
                             variant="filled"
                             fullWidth 
                             sx={{ mb: 1 }}
-                            { ...register('precio', {
+                            { ...register('minStock', {
                                 required: 'Este campo es requerido',
                                 minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                             })}
-                            error={ !!errors.precio }
-                            helperText={ errors.precio?.message }
+                            error={ !!errors.minStock }
+                            helperText={ errors.minStock?.message }
                         />
+                        
+                        <TextField
+                            label="CostoUnidad"
+                            type='number'
+                            variant="filled"
+                            fullWidth 
+                            sx={{ mb: 1 }}
+                            { ...register('costoUnidad', {
+                                required: 'Este campo es requerido',
+                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
+                            })}
+                            error={ !!errors.costoUnidad }
+                            helperText={ errors.costoUnidad?.message }
+                        />
+
+                        <Divider sx={{ my: 1 }} />
+
+                        <FormControl sx={{ mb: 1 }}>
+                            <FormLabel>Unidad de Medida</FormLabel>
+                            <RadioGroup
+                                row
+                                value={ getValues('unidadMedida') }
+                                onChange={ ({ target }) => setValue('unidadMedida', target.value as IUnit, {shouldValidate: true}) }
+                            >
+                                {
+                                    validCaterogies.map( option => (
+                                        <FormControlLabel 
+                                            key={ option }
+                                            value={ option }
+                                            control={ <Radio color='secondary' /> }
+                                            label={ capitalize(option) }
+                                        />
+                                    ))
+                                }
+                            </RadioGroup>
+                        </FormControl>
 
                         <Divider sx={{ my: 1 }} />
 
@@ -197,7 +184,7 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                             <RadioGroup
                                 row
                                 value={ getValues('categoria') }
-                                onChange={ ({ target }) => setValue('categoria', target.value as ICategories, {shouldValidate: true}) }
+                                onChange={ ({ target }) => setValue('categoria', target.value as IIngredientCategories, {shouldValidate: true}) }
                             >
                                 {
                                     validCaterogies.map( option => (
@@ -226,61 +213,6 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                             error={ !!errors.slug }
                             helperText={ errors.slug?.message }
                         />
-                        
-                        <Box display='flex' flexDirection="column">
-                            <FormLabel sx={{ mb:1}}>Imágenes</FormLabel>
-                            <Button
-                                color="secondary"
-                                fullWidth
-                                startIcon={ <UploadOutlined /> }
-                                sx={{ mb: 3 }}
-                                onClick={ () => fileInputRef.current?.click() }
-                            >
-                                Cargar imagen
-                            </Button>
-                            <input
-                                ref={ fileInputRef }
-                                type={'file'}
-                                multiple
-                                accept='image/png, image/gif, image/jpeg'
-                                style={{ display: 'none' }}
-                                onChange={ onFilesSelected }
-                            />
-
-                            <Chip 
-                                label="Es necesario subir una imagenes"
-                                color='error'
-                                variant='outlined'
-                                sx={{ display: getValues('imagen').length < 1 ? 'flex' : 'none' }}
-                            />
-
-                            <Grid container spacing={2}>
-                                {
-                                    getValues('imagen').map( img => (
-                                        <Grid item xs={4} sm={3} key={img}>
-                                            <Card>
-                                                <CardMedia 
-                                                    component='img'
-                                                    className='fadeIn'
-                                                    image={ img }
-                                                    alt={ img }
-                                                />
-                                                <CardActions>
-                                                    <Button 
-                                                        fullWidth 
-                                                        color="error"
-                                                        onClick={()=> onDeleteImage(img)}
-                                                    >
-                                                        Borrar
-                                                    </Button>
-                                                </CardActions>
-                                            </Card>
-                                        </Grid>
-                                    ))
-                                }
-                            </Grid>
-
-                        </Box>
 
                     </Grid>
 
@@ -294,23 +226,22 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
     
     const { slug = ''} = query;
     
-    let  product: IProduct | null;  
+    let  ingredient: IIngredient | null;  
 
     if ( slug === 'new' ) {
 
-        const tempProduct = JSON.parse( JSON.stringify( new Product()));
-        delete tempProduct._id;
-        tempProduct.imagenes = ['img1.jpg', 'img2.jpg'];
-        product = tempProduct;
+        const tempIngredient = JSON.parse( JSON.stringify( new Ingredient()));
+        delete tempIngredient._id;
+        ingredient = tempIngredient;
 
     } else {
-        product = await dbProducts.getProductBySlug(slug.toString());
+        ingredient = await dbIngredients.getIngredientBySlug(slug.toString());
     }
 
-    if ( !product ) {
+    if ( !ingredient ) {
         return {
             redirect: {
-                destination: '/admin/products',
+                destination: '/admin/ingredients',
                 permanent: false,
             }
         }
@@ -319,10 +250,10 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
     return {
         props: {
-            product
+            ingredient: ingredient
         }
     }
 }
 
 
-export default ProductAdminPage
+export default IngredientAdminPage
