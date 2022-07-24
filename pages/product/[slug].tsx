@@ -66,7 +66,7 @@ const ProductPage:NextPage<Props> = ({product, totalStock}) => {
               />
             </Box>    
             {
-              (totalStock >= 0)
+              (totalStock > 0)
                 ? (
                   <Button 
                     color="secondary" 
@@ -122,6 +122,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     //ngredients.push(ingredient);
   }
 
+  console.log(ingredients);
+
   const stock = (): number => {
     let neededIngredients = product!.recipe as [string, number][];
     let sotckedIngredients = ingredients.map(ingredient => ingredient.inStock);
@@ -130,6 +132,11 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 
     for(let i = 0; i < neededIngredients.length; i++){
         stock.push(sotckedIngredients[i] / neededIngredients[i][1]);
+    }
+
+    if(neededIngredients.length > sotckedIngredients.length) {
+      console.log('No hay stock');
+      return 0;
     }
     //console.log(Math.trunc(Math.min(...stock)));
     return Math.trunc(Math.min(...stock));

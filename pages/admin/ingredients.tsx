@@ -29,7 +29,7 @@ const columns: GridColDef[] = [
 
 const IngredientsPage = () => {
 
-    const {data, error} = useSWR<IIngredient[]>('/api/admin/products');
+    const {data, error} = useSWR<IIngredient[]>('/api/admin/ingredients');
 
     if(!data && !error) {
         return <></>
@@ -40,6 +40,7 @@ const IngredientsPage = () => {
         title: ingredient.nombre,
         category: ingredient.categoria,
         price: ingredient.costoUnidad,
+        inStock: ingredient.inStock,
         slug: ingredient.slug
     }));
 

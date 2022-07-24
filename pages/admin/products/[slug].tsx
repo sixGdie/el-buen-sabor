@@ -69,7 +69,8 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                         .post<{message:string}>('/admin/upload', formData);
                 setValue(
                     'imagen', 
-                    [...getValues('imagen'), data.message], 
+                    //getValues('imagen'), 
+                    data.message, 
                     { shouldValidate: true }); 
             }
 
@@ -83,6 +84,8 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
             'imagen', 
             getValues('imagen'),
             { shouldValidate: true });
+            //recargar la página
+            router.reload();
     }
 
     const onSubmitForm = async ( form: FormData ) => {
@@ -149,7 +152,21 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                         />
 
                         <TextField
-                            label="Descripción"
+                            label="Ingredientes"
+                            variant="filled"
+                            fullWidth 
+                            multiline
+                            sx={{ mb: 1 }}
+                            { ...register('recipe', {
+                                required: 'Este campo es requerido',
+                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
+                            })}
+                            error={ !!errors.recipe }
+                            //helperText={ errors.descripcion?.message }
+                        />
+
+                        <TextField
+                            label="Descripcion"
                             variant="filled"
                             fullWidth 
                             multiline
@@ -226,6 +243,33 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                             error={ !!errors.slug }
                             helperText={ errors.slug?.message }
                         />
+
+                        <TextField
+                            label="Tiempo de elaboración en minutos"
+                            type='number'
+                            variant="filled"
+                            fullWidth 
+                            sx={{ mb: 1 }}
+                            { ...register('estimatedTimeMinutes', {
+                                required: 'Este campo es requerido',
+                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
+                            })}
+                            error={ !!errors.estimatedTimeMinutes }
+                            helperText={ errors.estimatedTimeMinutes?.message }
+                        />
+
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={ getValues('active') }
+                                    onChange={ ({ target }) => setValue('active', target.checked, {shouldValidate: true}) }
+                                    color="secondary"
+                                />
+
+                            }
+                            label="Activo"
+                            //{ ...register('active')}
+                        />
                         
                         <Box display='flex' flexDirection="column">
                             <FormLabel sx={{ mb:1}}>Imágenes</FormLabel>
@@ -256,27 +300,27 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
 
                             <Grid container spacing={2}>
                                 {
-                                    getValues('imagen').map( img => (
-                                        <Grid item xs={4} sm={3} key={img}>
+                                        <Grid item xs={4} sm={3} key={getValues('imagen')}>
                                             <Card>
                                                 <CardMedia 
                                                     component='img'
                                                     className='fadeIn'
-                                                    image={ img }
-                                                    alt={ img }
+                                                    image={ getValues('imagen') }
+                                                    alt={ getValues('imagen') }
                                                 />
-                                                <CardActions>
+                                                {/*<CardActions>
                                                     <Button 
                                                         fullWidth 
                                                         color="error"
-                                                        onClick={()=> onDeleteImage(img)}
+                                                        onClick={()=> onDeleteImage(
+                                                            getValues('imagen')
+                                                            )}
                                                     >
                                                         Borrar
                                                     </Button>
-                                                </CardActions>
+                                                        </CardActions>*/}
                                             </Card>
                                         </Grid>
-                                    ))
                                 }
                             </Grid>
 
@@ -300,7 +344,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
         const tempProduct = JSON.parse( JSON.stringify( new Product()));
         delete tempProduct._id;
-        tempProduct.imagenes = ['img1.jpg', 'img2.jpg'];
+        tempProduct.imagen = 'img1.jpg';
         product = tempProduct;
 
     } else {

@@ -1,9 +1,9 @@
 import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react'
 import { GetServerSideProps } from 'next'
 import { AdminLayout } from '../../../components/layouts'
-import { ICategories, IIngredient, IIngredientCategories, IProduct, IUnit } from '../../../interfaces';
+import { IIngredient, IIngredientCategories, IUnit } from '../../../interfaces';
 import { DriveFileRenameOutline, SaveOutlined, UploadOutlined } from '@mui/icons-material';
-import { dbIngredients, dbProducts } from '../../../database';
+import { dbIngredients } from '../../../database';
 import { Box, Button, capitalize, Card, CardActions, CardMedia, Checkbox, Chip, Divider, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, ListItem, Paper, Radio, RadioGroup, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import { elBuenSaborApi } from '../../../api';
@@ -11,7 +11,8 @@ import { Ingredient, Product } from '../../../models';
 import { useRouter } from 'next/router';
 
 
-const validCaterogies  = ['bebida', 'hamburguesa', 'pizza', 'pancho', 'guarnicion', 'lomo', 'otro']
+const validCaterogies  = ['bebida', 'lacteos', 'carne', 'panificados', 'vegetales', 'condimentos', 'otro']
+const validTypes = ['Kg', 'Lt', 'Gr', 'Unidad', 'Otro']
 
 interface FormData {
     _id: string;
@@ -26,10 +27,10 @@ interface FormData {
 }
 
 interface Props {
-    product: IIngredient;
+    ingredient: IIngredient;
 }
 
-const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
+const IngredientAdminPage:FC<Props> = ({ ingredient }) => {
 
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
@@ -37,6 +38,8 @@ const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
     const { register, handleSubmit, formState:{errors}, getValues, setValue, watch} = useForm({
         defaultValues: ingredient
     })
+
+    console.log(ingredient);
 
     useEffect(() => {
         const subscription = watch(( value, { name, type }) => {
@@ -79,7 +82,7 @@ const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
 
     return (
         <AdminLayout 
-            title={'Producto'} 
+            title={'Ingrediente'} 
             subTitle={`Editando: ${ ingredient.nombre }`}
             icon={ <DriveFileRenameOutline /> }
         >
@@ -121,7 +124,6 @@ const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
                             sx={{ mb: 1 }}
                             { ...register('inStock', {
                                 required: 'Este campo es requerido',
-                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                             })}
                             error={ !!errors.inStock }
                             helperText={ errors.inStock?.message }
@@ -135,21 +137,19 @@ const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
                             sx={{ mb: 1 }}
                             { ...register('minStock', {
                                 required: 'Este campo es requerido',
-                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                             })}
                             error={ !!errors.minStock }
                             helperText={ errors.minStock?.message }
                         />
                         
                         <TextField
-                            label="CostoUnidad"
-                            type='number'
+                            label="Costo Unidad"
+                            type='decimal'
                             variant="filled"
                             fullWidth 
                             sx={{ mb: 1 }}
                             { ...register('costoUnidad', {
                                 required: 'Este campo es requerido',
-                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
                             })}
                             error={ !!errors.costoUnidad }
                             helperText={ errors.costoUnidad?.message }
@@ -165,7 +165,7 @@ const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
                                 onChange={ ({ target }) => setValue('unidadMedida', target.value as IUnit, {shouldValidate: true}) }
                             >
                                 {
-                                    validCaterogies.map( option => (
+                                    validTypes.map( option => (
                                         <FormControlLabel 
                                             key={ option }
                                             value={ option }
@@ -214,6 +214,22 @@ const IngredientAdminPage:FC<Props> = ({ product: ingredient }) => {
                             helperText={ errors.slug?.message }
                         />
 
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={ getValues('active') }
+                                    onChange={ ({ target }) => setValue('active', target.checked, {shouldValidate: true}) }
+                                    color="secondary"
+                                />
+
+                            }
+                            label="Activo"
+                            //{ ...register('active')}
+                        />
+
+
+
+
                     </Grid>
 
                 </Grid>
@@ -250,7 +266,7 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
     return {
         props: {
-            ingredient: ingredient
+            ingredient
         }
     }
 }

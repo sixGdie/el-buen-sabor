@@ -40,6 +40,10 @@ export const ProductCard: FC<Props> = ({product}) => {
             stock.push(sotckedIngredients[i] / neededIngredients[i][1]);
         }
 
+        if(neededIngredients.length > sotckedIngredients.length) {
+            return 0;
+        }
+
         return Math.trunc(Math.min(...stock));
     }
     return (

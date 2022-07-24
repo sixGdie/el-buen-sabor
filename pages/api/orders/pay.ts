@@ -1,7 +1,6 @@
 import axios from 'axios';
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { db } from '../../../database';
-//import { IPaypal } from '../../../interfaces';
 import { Order } from '../../../models';
 import mercadoPago from 'mercadopago';
 import NextCors from 'nextjs-cors';
@@ -23,40 +22,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     }
 }
 
-/*const getPaypalBearerToken = async():Promise<string|null> => {
-    
-    const PAYPAL_CLIENT = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-    const PAYPAL_SECRET = process.env.PAYPAL_SECRET;
-
-    const base64Token = Buffer.from(`${ PAYPAL_CLIENT }:${ PAYPAL_SECRET }`, 'utf-8').toString('base64');
-    const body = new URLSearchParams('grant_type=client_credentials');
-
-
-    try {
-        
-        const { data} = await axios.post( process.env.PAYPAL_OAUTH_URL || '', body, {
-            headers: {
-                'Authorization': `Basic ${ base64Token }`,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        });
-
-        return data.access_token;
-
-
-    } catch (error) {
-        if ( axios.isAxiosError(error) ) {
-            console.log(error.response?.data);
-        } else {
-            console.log(error);
-        }
-
-        return null;
-    }
-
-
-}*/
-
 
 const payOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
@@ -69,12 +34,6 @@ const payOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
      });
     // Todo: validar sesión del usuario
     // TODO: validar mongoID
-
-    /*const paypalBearerToken = await getPaypalBearerToken();
-
-    if ( !paypalBearerToken ) {
-        return res.status(400).json({ message: 'No se pudo confirmar el token de paypal' })
-    }*/
 
     //const { transactionId = '', orderId = ''  } = req.body;
     const orderId = req.body.orderId;
@@ -128,17 +87,6 @@ const payOrder = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
       }).catch(function(error){
         console.log(error);
       });*/
-    
-    /*const { data } = await axios.get<IPaypal.PaypalOrderStatusResponse>( `${ process.env.PAYPAL_ORDERS_URL }/${ transactionId }`, {
-        headers: {
-            'Authorization': `Bearer ${ paypalBearerToken }`
-        }
-    });*/
-
-    /*if ( data.response.body.status !== 'approved' ) {
-        return res.status(401).json({ message: 'Orden no reconocida' });
-    }*/
-
 
     ///await db.connect();
     ///const dbOrder = await Order.findById(orderId);

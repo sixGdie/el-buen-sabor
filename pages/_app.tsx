@@ -6,14 +6,11 @@ import { lightTheme } from '../themes';
 import { CssBaseline } from '@mui/material';
 import { SWRConfig } from 'swr';
 import { UiProvider, CartProvider, AuthProvider } from '../context';
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     
-    //TODO: Eliminar lo de paypal
       <SessionProvider>
-        <PayPalScriptProvider options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || '' }}>
           <SWRConfig
           value={{
             //refreshInterval: 500, PARA ACTUALIZAR LA PAGINA CADA CIERTA CANTIDAD DE MS
@@ -31,7 +28,6 @@ function MyApp({ Component, pageProps }: AppProps) {
               </CartProvider>
             </AuthProvider>    
           </SWRConfig> 
-        </PayPalScriptProvider> 
       </SessionProvider>         
   )
 }

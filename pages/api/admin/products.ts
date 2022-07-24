@@ -79,7 +79,33 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
         }; //TODO Revisar esto
             
 
-        await product.update( req.body );
+        const recipes:string = req.body.recipe.toString();
+
+        const splitRecipes = recipes.split(',');
+
+        let recipeAfterStuff: [string, number][] = [];
+
+        for(let i = 0; i < splitRecipes.length; i++){
+            if(i % 2 === 0){
+                recipeAfterStuff.push([splitRecipes[i].trim(), parseInt(splitRecipes[i + 1].trim())]);
+            }
+        }
+
+        console.log(recipeAfterStuff);
+
+        await product.update(
+            {
+                recipe: recipeAfterStuff,
+                imagen: req.body.imagen,
+                nombre: req.body.nombre,
+                categoria: req.body.categoria,
+                precio: req.body.precio,
+                descripcion: req.body.descripcion,
+                //estimatedTimeMinutes: req.body.estimatedTimeMinutes,
+                slug: req.body.slug,
+                active: req.body.active
+            }
+        );
 
         await db.disconnect();
 
