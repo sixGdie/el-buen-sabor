@@ -26,7 +26,7 @@ const getProductsBySlug = async (req: NextApiRequest, res: NextApiResponse<Data>
     const { slug } = req.query;
 
     const product: IProduct = await Product.findOne({ slug })
-                                .select('nombre imagenes precio inStock slug -_id') 
+                                .select('nombre imagen precio inStock slug -_id') 
                                 .lean();
 
     await db.disconnect();

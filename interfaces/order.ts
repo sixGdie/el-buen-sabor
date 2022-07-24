@@ -27,6 +27,7 @@ export type IPaymentMethod = 'MercadoPago'|'Efectivo';
 export interface IOrderItem {
     _id: string;
     nombre: string;
+    maximo: number;
     cantidad: number;
     slug: string;
     imagen: string;

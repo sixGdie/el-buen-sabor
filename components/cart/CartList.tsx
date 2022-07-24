@@ -4,7 +4,7 @@ import { Box, Button, CardActionArea, CardMedia, Grid, Link, Typography } from '
 import { ItemCounter } from '../ui';
 import { CartContext } from '../../context';
 import { ICartProduct, IOrderItem } from '../../interfaces';
-import { currency, utils } from '../../utils';
+import { currency } from '../../utils';
 import { dbIngredients } from '../../database';
 import { IIngredient } from '../../interfaces/ingredient';
 
@@ -20,7 +20,7 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
     const onNewCartQuantityValue = (product: ICartProduct, newQuantityValue: number) => {
         product.cantidad = newQuantityValue;
         updateCartQuantity(product);
-    }
+    }  
 
     const productsToShow = products ? products : cart;
 
@@ -50,7 +50,7 @@ export const CartList: FC<Props> = ({ editable = false, products }) => {
                                 ? (
                                     <ItemCounter 
                                         currentValue={product.cantidad} 
-                                        maxValue={utils.getStock(product as ICartProduct)} //TODO: Revisar
+                                        maxValue={product.maximo} //TODO: Revisar
                                         updatedQuantity={ (newValue) => {
                                             onNewCartQuantityValue(product as ICartProduct, newValue)
                                         }}

@@ -14,10 +14,7 @@ const productSchema: Schema = new Schema({
     descripcion: { type: String, required: true, default: '' },
     slug: { type: String, required: true, unique: true },
     estimatedTimeMinutes: { type: Number, required: true, default: 0 },
-    recipe: [{
-        ingrediente: { type: String, required: true, default: '' },
-        cantidad: { type: Number, required: true, default: 0 }
-    }],
+    recipe: [{type: [String, Number], required: true, default: []}],
     active: { type: Boolean, required: true, default: true },
 }, { 
     timestamps: true 

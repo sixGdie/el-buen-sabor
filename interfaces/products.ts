@@ -7,10 +7,7 @@ export interface IProduct {
     precio: number;
     descripcion: string;
     estimatedTimeMinutes: number;
-    recipe: [{
-        ingrediente: string;
-        cantidad: number;
-    }];
+    recipe: [string, number][];
     slug: string;
     active: boolean;
     createdAt: string;

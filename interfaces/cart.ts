@@ -5,7 +5,8 @@ export interface ICartProduct {
     nombre: string;
     imagen: string;
     precio: number;
-    recipe: IIngredientItem[];
+    recipe: [string, number][];
     slug: string;
+    maximo: number;
     cantidad: number;
 }

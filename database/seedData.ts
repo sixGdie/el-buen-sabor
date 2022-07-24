@@ -7,7 +7,7 @@ interface SeedProduct {
     precio: number;
     descripcion: string;
     estimatedTimeMinutes: number;
-    recipe: SeedIngredientItem[];
+    recipe: [string, number][];
     slug: string;
     active: boolean;
 }
@@ -116,22 +116,9 @@ export const initialData: SeedData = {
             descripcion: "Tarta de vegetales sabor mediterráneo, apto para veganos",
             estimatedTimeMinutes: 15,
             recipe: [
-                {
-                    ingrediente: 'Aceite de Oliva',
-                    cantidad: 1,
-                },
-                {
-                    ingrediente: 'Queso',
-                    cantidad: 1,
-                },
-                {
-                    ingrediente: 'Tomate',
-                    cantidad: 1,
-                },
-                {
-                    ingrediente: 'Cebolla',
-                    cantidad: 1,
-                },
+                ['Queso', 2],
+                ['Tomate', 1],
+                ['Cebolla', 1],
             ],
             slug: "tarta_vegetales_mediterraneo1",
             active: true,
@@ -144,18 +131,9 @@ export const initialData: SeedData = {
             descripcion: "El clásico de queso y carne molida",
             estimatedTimeMinutes: 15,
             recipe: [
-                {
-                    ingrediente: 'Queso',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Tomate',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Cebolla',
-                    cantidad: 1.5,
-                }
+                ['Queso', 2],
+                ['Tomate', 1],
+                ['Cebolla', 1],
             ],
             slug: "pizza_margarita1",
             active: true,
@@ -168,18 +146,9 @@ export const initialData: SeedData = {
             descripcion: "RRRRica hamburguesa de queso",
             estimatedTimeMinutes: 15,
             recipe: [
-                {
-                    ingrediente: 'Queso',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Tomate',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Cebolla',
-                    cantidad: 1.5,
-                }
+                ['Queso', 2],
+                ['Tomate', 1],
+                ['Cebolla', 1],
             ],
             slug: "hamburguesa_queso1",
             active: true,
@@ -192,18 +161,9 @@ export const initialData: SeedData = {
             descripcion: "La comida de la verguenza",
             estimatedTimeMinutes: 15,
             recipe: [
-                {
-                    ingrediente: 'Queso',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Tomate',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Cebolla',
-                    cantidad: 1.5,
-                }
+                ['Queso', 2],
+                ['Tomate', 1],
+                ['Cebolla', 1],
             ],
             slug: "pancho1",
             active: true,
@@ -216,18 +176,9 @@ export const initialData: SeedData = {
             descripcion: "Papas fritas con queso",
             estimatedTimeMinutes: 15,
             recipe: [
-                {
-                    ingrediente: 'Queso',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Tomate',
-                    cantidad: 1.5,
-                },
-                {
-                    ingrediente: 'Cebolla',
-                    cantidad: 1.5,
-                }
+                ['Queso', 2],
+                ['Tomate', 1],
+                ['Cebolla', 1],
             ],
             slug: "papas_fritas1",
             active: true,

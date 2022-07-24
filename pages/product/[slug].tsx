@@ -5,16 +5,17 @@ import { useState, useContext } from 'react';
 import { ShopLayout } from '../../components/layouts/ShopLayout';
 import { ProductSlideshow } from '../../components/products';
 import { ItemCounter } from '../../components/ui';
-import { dbProducts } from '../../database';
-import { ICartProduct, IProduct } from '../../interfaces';
+import { dbIngredients, dbProducts } from '../../database';
+import { ICartProduct, IIngredient, IProduct } from '../../interfaces';
 import { CartContext } from '../../context/cart/CartContext';
-import { utils } from '../../utils';
+import { useIngredients } from '../../hooks';
 
 interface Props {
   product: IProduct;
+  totalStock: number;
 }
 
-const ProductPage:NextPage<Props> = ({product}) => {
+const ProductPage:NextPage<Props> = ({product, totalStock}) => {
 
   const router = useRouter();
   const { addProductToCard } = useContext( CartContext );
@@ -26,6 +27,7 @@ const ProductPage:NextPage<Props> = ({product}) => {
     precio: product.precio,
     recipe: product.recipe,
     slug: product.slug,
+    maximo: totalStock,
     cantidad: 1,
   })
 
@@ -35,13 +37,6 @@ const ProductPage:NextPage<Props> = ({product}) => {
       cantidad
     }))
   }
-
-  const hasStock = (): number => {
-    utils.getStock(product).then(res => {
-        return res; //TODO: Revisar
-    });
-    return 0;
-}
 
   const onAddProduct = () => {
     addProductToCard(tempCartProduct);
@@ -67,11 +62,11 @@ const ProductPage:NextPage<Props> = ({product}) => {
               <ItemCounter
                 currentValue={tempCartProduct.cantidad}
                 updatedQuantity={onUpdateQuantity}
-                maxValue={hasStock}
+                maxValue={totalStock}
               />
             </Box>    
             {
-              (hasStock() > 0)
+              (totalStock >= 0)
                 ? (
                   <Button 
                     color="secondary" 
@@ -82,7 +77,7 @@ const ProductPage:NextPage<Props> = ({product}) => {
                   </Button>
                 ) 
                 : (
-                  <Chip label='No hay stock' color='error' variant='outlined'/>
+                  <Chip label='No hay Stock' color='error' variant='outlined'/>
                 )
             }
             <Box sx={{ mt:3 }}>
@@ -116,6 +111,32 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   const { slug = '' } = params as { slug: string }; 
   const product = await dbProducts.getProductBySlug(slug);
 
+  let ingredients: IIngredient[] = [];
+
+  for(let i = 0; i < product!.recipe.length; i++) {
+    let name = product?.recipe[i][0];
+    let ingredient = await dbIngredients.getIngredientsByName(name as string);
+    for(let j = 0; j < ingredient!.length; j++) {
+      ingredients.push(ingredient![j]);
+    }
+    //ngredients.push(ingredient);
+  }
+
+  const stock = (): number => {
+    let neededIngredients = product!.recipe as [string, number][];
+    let sotckedIngredients = ingredients.map(ingredient => ingredient.inStock);
+    
+    let stock: number[] = [];
+
+    for(let i = 0; i < neededIngredients.length; i++){
+        stock.push(sotckedIngredients[i] / neededIngredients[i][1]);
+    }
+    //console.log(Math.trunc(Math.min(...stock)));
+    return Math.trunc(Math.min(...stock));
+}
+
+  let totalStock = stock();
+
   if (!product) {
     return {
       redirect: {
@@ -127,7 +148,8 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 
   return {
     props: {
-      product
+      product,
+      totalStock
     },
     revalidate: 86400 //una vez por día
   }

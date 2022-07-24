@@ -2,35 +2,59 @@ import { FC, useMemo, useState } from "react";
 import NextLink from "next/link";
 import { Box, Card, CardActionArea, CardMedia, Chip, Grid, Link, Typography } from "@mui/material";
 import { IProduct } from "../../interfaces";
-import { utils } from "../../utils";
+import { GetStaticProps } from "next";
+import { dbIngredients, dbProducts } from "../../database";
+import { useIngredients } from "../../hooks";
+import { FullScreenLoading } from "../ui";
+import { IIngredient } from '../../interfaces/ingredient';
 
 interface Props {
-    product: IProduct
+    product: IProduct;
 }
 
 export const ProductCard: FC<Props> = ({product}) => {
 
     const [isHovered, setIsHovered] = useState(false)
+
+    let ingredients: IIngredient[] = [];
+
+    for(let i = 0; i < product.recipe.length; i++){
+        //console.log(product.recipe[i][0]);
+        const { ingredient } = useIngredients(`/ingredients?nombre=${product.recipe[i][0]}`);
+        //console.log(ingredient);
+        for(let j = 0; j < ingredient.length; j++){
+            ingredients.push(ingredient[j]);
+        };
+    }
+
+    
     const [isImageLoaded, setIsImageLoaded] = useState(false)
-    const hasStock = (): number => {
-        utils.getStock(product).then(res => {
-            return res; //TODO: Revisar
-        });
-        return 0;
+    
+    const stock = (): number => {
+        let neededIngredients = product.recipe as [string, number][];
+        let sotckedIngredients = ingredients!.map(ingredient => ingredient.inStock);
+        
+        let stock: number[] = [];
+
+        for(let i = 0; i < neededIngredients.length; i++){
+            stock.push(sotckedIngredients[i] / neededIngredients[i][1]);
+        }
+
+        return Math.trunc(Math.min(...stock));
     }
     return (
         <Grid item 
-                xs={6} 
-                sm={4} 
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+        xs={6} 
+        sm={4} 
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         >
             <Card>
                 <NextLink href={`/product/${product.slug}`} passHref prefetch={false}>
                     <Link>
                         <CardActionArea>
                             {
-                                (hasStock() === 0) && (
+                                (stock() <= 0) && (
                                     <Chip
                                         color='primary'
                                         label='Sin stock'
@@ -56,5 +80,7 @@ export const ProductCard: FC<Props> = ({product}) => {
                 <Typography fontWeight={500}>{`$${product.precio}`}</Typography>
             </Box>
         </Grid>
-  )
+    //}
+    //</div>
+    )
 }

@@ -2,7 +2,7 @@ import { Typography } from '@mui/material';
 import type { NextPage } from 'next';
 import { ShopLayout } from '../components/layouts';
 import { ProductList } from '../components/products';
-import { useProducts } from '../hooks/';
+import { useIngredients, useProducts } from '../hooks/';
 import { FullScreenLoading } from '../components/ui/';
 import { useSession } from 'next-auth/react';
 
@@ -11,6 +11,8 @@ import { useSession } from 'next-auth/react';
 const HomePage: NextPage = () => {
 
   const {products, isLoading} = useProducts('/products');
+  //const { ingredient } = useIngredients('/ingredients');
+  
 
   return (
     <ShopLayout 
