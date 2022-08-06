@@ -7,6 +7,7 @@ interface ContextProps {
     numberOfItems: number;
     subTotal: number;
     tax: number;
+    discount: number;
     total: number;
 
     sendAddress?: SendAddress;
@@ -15,7 +16,7 @@ interface ContextProps {
     updateCartQuantity: (product: ICartProduct) => void;
     removeCartProduct: (product: ICartProduct) => void;
     updateAddress: (sendAddress: SendAddress) => void;
-    createOrder: () => Promise<{ hasError: boolean, message: string}>
+    createOrder: (withContext: boolean) => Promise<{ hasError: boolean, message: string}>
 }
 
 

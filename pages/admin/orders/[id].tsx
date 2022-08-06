@@ -76,6 +76,7 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                         numberOfItems: order.numberOfItems,
                                         subTotal: order.subTotal,
                                         total: order.total,
+                                        discount: order.discount,
                                         tax: order.tax,
                                     }}
                                 />

@@ -73,6 +73,7 @@ export const ProductCard: FC<Props> = ({product}) => {
                                 image={ product.imagen }
                                 alt={ product.nombre }
                                 onLoad={() => setIsImageLoaded(true)}
+                                sx={{ width: '300px', height: '300px', objectFit: 'cover' }}
                             />
                         </CardActionArea>
                     </Link>

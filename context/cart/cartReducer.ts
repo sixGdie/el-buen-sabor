@@ -14,6 +14,7 @@ type CartActionType =
        payload: {
             numberOfItems: number,
             subTotal: number,
+            discount: number,
             tax: number,
             total: number
        }
@@ -71,6 +72,7 @@ export const cartReducer = ( state:CartState, action: CartActionType ): CartStat
                 numberOfItems: 0,
                 subTotal: 0,
                 tax: 0,
+                discount: 0,
                 total: 0,
             }
 

@@ -10,6 +10,7 @@ export interface IOrder {
     numberOfItems: number;
     subTotal: number;
     tax: number;
+    discount: number;
     total: number;
     currentState: IOrderState;
     paidMethod: IPaymentMethod;

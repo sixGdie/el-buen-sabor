@@ -24,7 +24,16 @@ const orderSchema = new Schema({
     numberOfItems: {type: Number, required: true},
     subTotal: {type: Number, required: true},
     tax: {type: Number, required: true},
+    discount: {type: Number, required: true},
     total: {type: Number, required: true},
+
+    currentState: [{
+        type: String,
+        enum: ['Ingresado', 'En Cocina', 'En delivery', 'Entregado', 'Cancelado'],
+        message: 'La categoria debe ser una de las siguientes: Ingresado, En Cocina, En delivery, Entregado, Cancelado',    
+        default: 'Ingresado',
+        required: true
+    }],
 
     paidMethod: [{
         type: String,

@@ -12,6 +12,7 @@ export interface CartState {
     numberOfItems: number;
     subTotal: number;
     tax: number;
+    discount: number;
     total: number;
     currentState: IOrderState;
     paidMethod: IPaymentMethod;
@@ -27,6 +28,7 @@ const CART_INITIAL_STATE: CartState = {
     cart: Cookies.get('cart') ? JSON.parse(Cookies.get('cart')!) : [],
     numberOfItems: 0,
     subTotal: 0,
+    discount: 0,
     tax: 0,
     total: 0,
     currentState: 'Ingresado',
@@ -75,10 +77,12 @@ export const CartProvider:FC<Props> = ({ children }) => {
         const numberOfItems = state.cart.reduce((prev, current) => current.cantidad + prev, 0);
         const subTotal = state.cart.reduce((prev, current) => (current.cantidad * current.precio) + prev, 0);
         const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0.21);
+        const discountRate = Number(process.env.NEXT_PUBLIC_DISCOUNT || 0.1);
 
         const orderSummary = {
             numberOfItems,
             subTotal,
+            discount: subTotal * discountRate,
             tax: subTotal * taxRate,
             total: subTotal * (taxRate + 1)
         }
@@ -128,7 +132,7 @@ export const CartProvider:FC<Props> = ({ children }) => {
         dispatch({ type: '[Cart] - Update Address', payload: address });
     }
 
-    const createOrder = async (): Promise<{ hasError: boolean, message: string}> => {
+    const createOrder = async (withDiscount: boolean): Promise<{ hasError: boolean, message: string}> => {
 
         if(!state.sendAddress) {
             throw new Error('No se ha definido la dirección de envío');
@@ -140,9 +144,10 @@ export const CartProvider:FC<Props> = ({ children }) => {
             numberOfItems: state.numberOfItems,
             subTotal: state.subTotal,
             currentState: state.currentState,
-            paidMethod: state.paidMethod,
+            paidMethod: withDiscount ? 'Efectivo' : 'MercadoPago',
             tax: state.tax,
-            total: state.total,
+            discount: withDiscount ? state.subTotal * parseFloat(process.env.NEXT_PUBLIC_DISCOUNT?.toString() || '0.1') : 0,
+            total: state.total - (withDiscount ? state.subTotal * parseFloat(process.env.NEXT_PUBLIC_DISCOUNT?.toString() || '0.1') : 0),
             isPaid: false,
         }
 

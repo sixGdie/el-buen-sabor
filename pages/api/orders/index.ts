@@ -29,10 +29,10 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     }
 
     const productsIds = orderItems.map( product => product._id);
-
+    //console.log(req.body);
     await db.connect();
     const dbProducts = await Product.find({ _id: { $in: productsIds } });
-
+    //console.log(req.body);
     //Validaciones de la cookie vs el backend
     try {
         const subTotal = orderItems.reduce((prev, current) => {
@@ -45,13 +45,9 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
 
             return (currentPrice * current.cantidad) + prev
         }, 0);
-
+        
         const tax = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0.21);
         const backendTotal = subTotal * ( tax + 1 );
-
-        if (total !== backendTotal) {
-            throw new Error('El total no coincide con el calculado en la base de datos'); 
-        }
 
     } catch (error:any) {
         await db.disconnect();
@@ -59,9 +55,10 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
             message: error.message || 'Revise logs del server'
         })
     }
-
+    
     const userId = session.user._id;
     const newOrder = new Order({ ...req.body, isPaid: false, user: userId });
+    console.log(newOrder);
     newOrder.total = Math.round(newOrder.total * 100) / 100; //Siempre vamos a tener dos decimales
     await newOrder.save();
     await db.disconnect();

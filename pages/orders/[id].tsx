@@ -136,6 +136,7 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                     orderValues={{
                                         numberOfItems: order.numberOfItems,
                                         subTotal: order.subTotal,
+                                        discount: order.discount,
                                         total: order.total,
                                         tax: order.tax,
                                     }}

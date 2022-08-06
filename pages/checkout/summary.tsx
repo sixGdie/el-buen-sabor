@@ -22,9 +22,22 @@ const SummaryPage = () => {
         }
     }, [ router ])
 
-    const onCreateOrder = async () => {
+    const onCreateOrderNoDiscount = async () => {
         setIsPosting(true);
-        const { hasError, message } = await createOrder();
+        const { hasError, message } = await createOrder(false);
+
+        if(hasError){
+            setIsPosting(false);
+            setErrorMessage(message);
+            return;
+        }
+
+        router.replace(`/orders/${message}`);
+    }
+
+    const onCreateOrderWithDiscount = async () => {
+        setIsPosting(true);
+        const { hasError, message } = await createOrder(true);
 
         if(hasError){
             setIsPosting(false);
@@ -90,10 +103,20 @@ const SummaryPage = () => {
                                     color='secondary' 
                                     className='circular-btn' 
                                     fullWidth
-                                    onClick={ onCreateOrder }
+                                    onClick={ onCreateOrderWithDiscount }
                                     disabled={ isPosting }
                                 >
-                                    Confirmar orden
+                                    Pagar en local
+                                </Button>
+
+                                <Button 
+                                    color='secondary' 
+                                    className='circular-btn' 
+                                    fullWidth
+                                    onClick={ onCreateOrderNoDiscount }
+                                    disabled={ isPosting }
+                                >
+                                    Pagar con Mercado Pago
                                 </Button>
 
                                 <Chip
