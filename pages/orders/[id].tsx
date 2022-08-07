@@ -158,30 +158,42 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                         flexDirection='column'
                                     >
                                         {  
-                                            order.isPaid
-                                                ? (
-                                                    <Chip
-                                                        sx={{ my:2 }}
-                                                        label="Pagada"
-                                                        variant='outlined'
-                                                        color='success'
-                                                        icon={<CreditScoreOutlined />} 
-                                                    />
-                                                )
-                                                : 
-                                                (
-                                                    <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
-                                                            <Button 
-                                                                color='secondary' 
-                                                                className='circular-btn' 
-                                                                fullWidth
-                                                                onClick={ () => { onOrderCompleted(order) } }
-                                                                //disabled={ isPaying }
-                                                            >
-                                                                Pagar orden
-                                                            </Button>                                                   
-                                                    </Box>
-                                                )
+                                            order.paidMethod === 'MercadoPago' ?
+                                                order.isPaid
+                                                    ? (
+                                                        <Chip
+                                                            sx={{ my:2 }}
+                                                            label="Pagada"
+                                                            variant='outlined'
+                                                            color='success'
+                                                            icon={<CreditScoreOutlined />} 
+                                                        />
+                                                    )
+                                                    : 
+                                                    (
+                                                        <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
+                                                                <Button 
+                                                                    color='secondary' 
+                                                                    className='circular-btn' 
+                                                                    fullWidth
+                                                                    onClick={ () => { onOrderCompleted(order) } }
+                                                                    //disabled={ isPaying }
+                                                                >
+                                                                    Pagar orden
+                                                                </Button>                                                   
+                                                        </Box>
+                                                    )
+                                            : 
+                                            
+                                            (
+                                                <Chip
+                                                            sx={{ my:2 }}
+                                                            label="A Pagar en local"
+                                                            variant='outlined'
+                                                            color='success'
+                                                            icon={<CreditScoreOutlined />} 
+                                                        />
+                                            )
                                         }
                                     </Box>
                                     

@@ -91,7 +91,7 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
             }
         }
 
-        console.log(recipeAfterStuff);
+        //console.log(recipeAfterStuff);
 
         await product.update(
             {
@@ -101,7 +101,7 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
                 categoria: req.body.categoria,
                 precio: req.body.precio,
                 descripcion: req.body.descripcion,
-                //estimatedTimeMinutes: req.body.estimatedTimeMinutes,
+                estimatedTimeMinutes: req.body.estimatedTimeMinutes,
                 slug: req.body.slug,
                 active: req.body.active
             }

@@ -122,7 +122,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     //ngredients.push(ingredient);
   }
 
-  console.log(ingredients);
+  //console.log(ingredients);
 
   const stock = (): number => {
     let neededIngredients = product!.recipe as [string, number][];

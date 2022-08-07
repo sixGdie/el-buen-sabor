@@ -39,7 +39,7 @@ const IngredientAdminPage:FC<Props> = ({ ingredient }) => {
         defaultValues: ingredient
     })
 
-    console.log(ingredient);
+    //console.log(ingredient);
 
     useEffect(() => {
         const subscription = watch(( value, { name, type }) => {

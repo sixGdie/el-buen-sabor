@@ -22,6 +22,8 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     const { orderItems, total } = req.body as IOrder;
 
+    console.log(orderItems);
+
     const session: any = await getSession({ req });
 
     if(!session) {
@@ -57,8 +59,8 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     }
     
     const userId = session.user._id;
-    const newOrder = new Order({ ...req.body, isPaid: false, user: userId });
-    console.log(newOrder);
+    const newOrder = new Order({ ...req.body, isPaid: false, currentState: 'Ingresado', user: userId });
+    //console.log(newOrder);
     newOrder.total = Math.round(newOrder.total * 100) / 100; //Siempre vamos a tener dos decimales
     await newOrder.save();
     await db.disconnect();
