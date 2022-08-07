@@ -20,6 +20,7 @@
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.30.0",
     "formidable": "^2.0.1",
+    "html-pdf-node-ts": "^1.0.7",
     "js-cookie": "^3.0.1",
     "jsonwebtoken": "^8.5.1",
     "mercadopago": "^1.5.13",

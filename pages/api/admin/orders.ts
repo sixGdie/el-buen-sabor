@@ -3,6 +3,7 @@ import { db } from '../../../database';
 import { Order } from '../../../models';
 import { IOrder } from '../../../interfaces';
 import { isValidObjectId } from 'mongoose';
+import { generatePdf } from 'html-pdf-node-ts';
 
 type Data = 
 | { message: string } 
@@ -66,3 +67,12 @@ const updateOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     res.status(200).json({ message: 'Orden actualizada correctamente' });
 }
+
+const onOrderDownload = () => {
+    let options = { format: 'A4' };
+    let file = [{ url: "https://example.com", name: 'example.pdf' }];
+
+    generatePdf(file, options).then(output => {
+    console.log("PDF Buffer:-", output); // PDF Buffer:- [{url: "https://example.com", name: "example.pdf", buffer: <PDF buffer>}]
+    });
+};

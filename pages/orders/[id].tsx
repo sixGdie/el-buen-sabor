@@ -11,6 +11,7 @@ import elBuenSaborApi from '../../api/elBuenSaborApi';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { Order } from '../../models';
+import { generatePdf } from "html-pdf-node-ts";
 
 //TODO: Ver la lógica para pagar en el local
 //TODO: Ver la lógica del descuento
@@ -34,6 +35,12 @@ const OrderPage: NextPage<Props> = ({order}) => {
     //const { sendAddress } = order;
 
     const [isPaying, setIsPaying] = useState(false);
+
+    const onOrderDownload = () => {
+        //llamar al metodo onOrderDownload
+        //elBuenSaborApi.get(`/orders/download`);
+        
+    };
 
     const onOrderCompleted = async( details: IOrder ) => {
         
@@ -195,6 +202,17 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                                         />
                                             )
                                         }
+
+                                        <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
+                                                <Button 
+                                                    color='secondary' 
+                                                    className='circular-btn' 
+                                                    fullWidth
+                                                    href="javascript:window.print()"     
+                                                >
+                                                    Descargar orden
+                                                </Button>                                                   
+                                        </Box>
                                     </Box>
                                     
                                 </Box>
@@ -262,7 +280,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
 
     return {
         props: {
-            order
+            order,
         }
     }
 }
