@@ -21,8 +21,6 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
             return res.status(400).json({ message: 'Bad request'});
 
     }
-
-
 }
 
 const getOrders = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
@@ -40,12 +38,9 @@ const getOrders = async(req: NextApiRequest, res: NextApiResponse<Data>) => {
 
 const updateOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const { orderId = '', currentState = '', paymentState = false} = req.body;
-
-    //let paymentState: boolean = req.body.paymentState;
     
-    console.log(req.body);
     let newCurrentState = currentState.toString();
-    console.log(newCurrentState);
+
     if ( !isValidObjectId(orderId) ) {
         return res.status(400).json({ message: 'No existe orden con esa id' });
     }
@@ -53,10 +48,9 @@ const updateOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     const validStates = ['Ingresado', 'En Cocina', 'En delivery', 'Entregado', 'Cancelado'];
     
     if ( !validStates.includes(newCurrentState) ) {
-        console.log("newCurrentState");
         return res.status(400).json({ message: 'No es un estado válido' });
     }
-    console.log(paymentState);
+
     await db.connect();
     const order = await Order.findById(orderId);
     if ( !order ) {
