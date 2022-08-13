@@ -61,9 +61,12 @@ const updateOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     order.isPaid = paymentState;
     order.currentState = newCurrentState;
-    order.estimatedTime = req.body.orderItems.array.forEach((element: { estimatedTime: number; }) => {
-        element.estimatedTime;
-    }).reduce((a: number, b: number) => a + b, 0);
+
+    if(req.body.orderItems != undefined) {
+        order.estimatedTime = req.body.orderItems.array.forEach((element: { estimatedTime: number; }) => {
+            element.estimatedTime;
+        }).reduce((a: number, b: number) => a + b, 0);
+    }
 
     //console.log(req.body.orderItems);
     console.log(order.estimatedTime);

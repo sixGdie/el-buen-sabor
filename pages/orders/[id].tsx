@@ -5,7 +5,7 @@ import { ShopLayout } from '../../components/layouts'
 import NextLink from 'next/link';
 import { GetServerSideProps, NextPage } from 'next';
 import { getSession } from 'next-auth/react';
-import { db, dbOrders } from '../../database';
+import { db, dbOrders, dbUsers } from '../../database';
 import { IOrder } from '../../interfaces';
 import elBuenSaborApi from '../../api/elBuenSaborApi';
 import { useRouter } from 'next/router';
@@ -27,14 +27,19 @@ export type OrderResponseBody = {
 
 interface Props {
     order: IOrder;
+    time: number;
 }
 
-const OrderPage: NextPage<Props> = ({order}) => {
+const OrderPage: NextPage<Props> = ({order, time}) => {
 
     const router = useRouter();
     //const { sendAddress } = order;
 
     const [isPaying, setIsPaying] = useState(false);
+
+    /*if(order._id === ) {
+
+    }*/
 
     const onOrderDownload = () => {
         //llamar al metodo onOrderDownload
@@ -146,8 +151,10 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                         discount: order.discount,
                                         total: order.total,
                                         tax: order.tax,
-                                        estimatedTime: order.estimatedTime,
+                                        estimatedTime: order.estimatedTime + time + (order.paidMethod === 'Efectivo' ? 0 : 10),
                                     }}
+                                    ordered={true}
+                                    isAdmin={false}
                                 />
         
                                 <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
@@ -166,7 +173,7 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                         flexDirection='column'
                                     >
                                         {  
-                                            order.paidMethod === 'MercadoPago' ?
+                                            order.paidMethod[0] === 'MercadoPago' ?
                                                 order.isPaid
                                                     ? (
                                                         <Chip
@@ -279,9 +286,29 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
         //dbOrder.transactionId = transactionId;
     }
 
+    let time = 0;
+    const data = await dbOrders.getAllOrders();
+    
+    let validOrders = data.filter((order: { currentState: { toString: () => string; }; }) => order.currentState.toString() === 'En Cocina');
+    
+    const realValidOrders = validOrders.filter((order => order._id != id));
+
+    time = realValidOrders.reduce((acc: any, order: { estimatedTime: any; }) => {
+        return acc + order.estimatedTime;
+    } , 0);
+
+    const cooks = await dbUsers.getCooks();
+
+    console.log(cooks);
+
+    cooks === 0 || cooks == null ? time = time : time /= cooks!;
+
+    console.log(time);
+    
     return {
         props: {
             order,
+            time,
         }
     }
 }

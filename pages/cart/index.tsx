@@ -35,7 +35,9 @@ const CartPage = () => {
                             <Typography variant="h2" component="h2">Orden</Typography>
                             <Divider sx ={{ my:1 }}/>
                             
-                            <OrderSummary/>
+                            <OrderSummary
+                                ordered={false}
+                            />
 
                             <Box sx={{ mt: 3 }}>
                                 <Button 

@@ -39,3 +39,13 @@ export const oAuthCreateOrLoginUser = async (oAuthEmail: string, oAuthName: stri
     const {_id, name, email, role } = newUser;
     return { _id, name, email, role };
 }
+
+export const getCooks = async () => {
+    await db.connect();
+    const user = await User.find({role: 'Chef'});
+    await db.disconnect();
+
+    if (!user) return null;
+
+    return user.length;
+}

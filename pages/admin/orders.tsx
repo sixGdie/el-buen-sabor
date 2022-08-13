@@ -41,8 +41,8 @@ const OrdersPage = () => {
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'Orden ID', width: 150 },
-    { field: 'email', headerName: 'Email', width: 200 },
-    { field: 'name', headerName: 'Nombre completo', width: 150 },
+    //{ field: 'email', headerName: 'Email', width: 200 },
+    //{ field: 'name', headerName: 'Nombre completo', width: 150 },
     { field: 'total', headerName: 'Monto total', width: 100 },
     {
         field: 'role', 
@@ -105,8 +105,8 @@ const columns: GridColDef[] = [
 
     const rows = (data! || []).map(order => ({
         id: order._id,
-        email: (order.user as IUser).email,
-        name: (order.user as IUser).name,
+        //email: (order.user as IUser).email,
+        //name: (order.user as IUser).name,
         total: order.total,
         currentState: order.currentState,
         isPaid: order.isPaid,

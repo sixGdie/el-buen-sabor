@@ -96,7 +96,10 @@ const SummaryPage = () => {
                                 </NextLink>
                             </Box>
 
-                            <OrderSummary/>
+                            <OrderSummary
+                                ordered={false}
+                                isAdmin={false}
+                            />
     
                             <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>
                                 <Button 

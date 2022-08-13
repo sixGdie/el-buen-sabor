@@ -80,6 +80,8 @@ const OrderPage: NextPage<Props> = ({order}) => {
                                         tax: order.tax,
                                         estimatedTime: order.estimatedTime,
                                     }}
+                                    ordered = {true}
+                                    isAdmin = {true}
                                 />
         
                                 <Box sx={{ mt: 3 }} display='flex' flexDirection='column'>

@@ -7,7 +7,6 @@ import { elBuenSaborApi } from '../../api';
 import axios from 'axios';
 import { dbOrders } from '../../database';
 import { resolve } from 'node:path/win32';
-import { getTime } from '../../hooks';
 
 export interface CartState {
     isLoaded: boolean;
@@ -46,7 +45,17 @@ const CART_INITIAL_STATE: CartState = {
 export const CartProvider:FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer( cartReducer , CART_INITIAL_STATE );
-    const timetime = getTime();
+
+    const getTime = async () => {
+        let time = 0;
+        const {data} = await elBuenSaborApi.get('/admin/orders');
+        
+        let validOrders = data.filter((order: { currentState: { toString: () => string; }; }) => order.currentState.toString() === 'Ingresado');
+        time = validOrders.reduce((acc: any, order: { estimatedTime: any; }) => {
+            return acc + order.estimatedTime;
+        } , 0);
+        return time;
+    }
 
     useEffect(() => {
         try {
@@ -88,7 +97,6 @@ export const CartProvider:FC<Props> = ({ children }) => {
         //save in the variable ordersTime the time into a number, not a promise
         
         //const ordersTime = ;
-        console.log(timetime);
             //resolver la promesa y retornar un umber;
         const ordersTime = 0;
         console.log(ordersTime);
@@ -103,8 +111,6 @@ export const CartProvider:FC<Props> = ({ children }) => {
             tax: subTotal * taxRate,
             total: subTotal * (taxRate + 1)
         }
-
-        console.log(orderSummary);
 
         dispatch({ type: '[Cart] - Update order summary', payload: orderSummary });
 
@@ -205,6 +211,7 @@ export const CartProvider:FC<Props> = ({ children }) => {
             removeCartProduct,
             updateAddress,
             createOrder,
+            
         }}>
             { children }
         </CartContext.Provider>
