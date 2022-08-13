@@ -9,6 +9,7 @@ interface ContextProps {
     tax: number;
     discount: number;
     total: number;
+    estimatedTime: number;
 
     sendAddress?: SendAddress;
 

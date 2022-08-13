@@ -3,6 +3,23 @@ import { IOrder } from "../interfaces";
 import { db } from '.';
 import { Order } from "../models";
 
+export const getAllOrders = async (): Promise<number> => {
+
+    await db.connect();
+    
+    const orders = await Order.find().lean();
+
+    const ordersTime: number = orders.map(order => {
+        return order.estimatedTime
+    }).reduce((a, b) => a + b, 0);
+
+    console.log(ordersTime);
+
+    await db.disconnect();
+
+    return ordersTime;
+}
+
 export const getOrderById = async (id: string): Promise<IOrder | null> => {
     
     if (!isValidObjectId(id)){

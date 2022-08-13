@@ -14,6 +14,7 @@ export interface IOrder {
     total: number;
     currentState: IOrderState;
     paidMethod: IPaymentMethod;
+    estimatedTime: number;
     isPaid: boolean;
     paidAt?: string;
     transactionId?: string;
@@ -30,6 +31,7 @@ export interface IOrderItem {
     nombre: string;
     maximo: number;
     cantidad: number;
+    estimatedTimeMinutes: number;
     slug: string;
     imagen: string;
     precio: number;

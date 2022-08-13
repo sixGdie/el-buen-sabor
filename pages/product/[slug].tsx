@@ -27,6 +27,7 @@ const ProductPage:NextPage<Props> = ({product, totalStock}) => {
     precio: product.precio,
     recipe: product.recipe,
     slug: product.slug,
+    estimatedTimeMinutes: product.estimatedTimeMinutes,
     maximo: totalStock,
     cantidad: 1,
   })

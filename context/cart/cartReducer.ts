@@ -15,6 +15,7 @@ type CartActionType =
             numberOfItems: number,
             subTotal: number,
             discount: number,
+            estimatedTime: number,
             tax: number,
             total: number
        }

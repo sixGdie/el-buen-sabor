@@ -8,6 +8,7 @@ const orderSchema = new Schema({
         nombre: {type: String, required: true},
         cantidad: {type: Number, required: true},
         slug: {type: String, required: true},
+        estimatedTimeMinutes: {type: Number, required: true},
         imagen: {type: String, required: true},
         precio: {type: Number, required: true},
     }],
@@ -26,6 +27,7 @@ const orderSchema = new Schema({
     tax: {type: Number, required: true},
     discount: {type: Number, required: true},
     total: {type: Number, required: true},
+    estimatedTime: {type: Number, required: true},
 
     currentState: [{
         type: String,

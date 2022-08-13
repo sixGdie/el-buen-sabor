@@ -6,6 +6,7 @@ export interface ICartProduct {
     imagen: string;
     precio: number;
     recipe: [string, number][];
+    estimatedTimeMinutes: number;
     slug: string;
     maximo: number;
     cantidad: number;

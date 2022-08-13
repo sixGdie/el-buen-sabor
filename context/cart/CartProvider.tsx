@@ -5,6 +5,9 @@ import { CartContext, cartReducer } from './';
 import Cookies from 'js-cookie';
 import { elBuenSaborApi } from '../../api';
 import axios from 'axios';
+import { dbOrders } from '../../database';
+import { resolve } from 'node:path/win32';
+import { getTime } from '../../hooks';
 
 export interface CartState {
     isLoaded: boolean;
@@ -14,6 +17,7 @@ export interface CartState {
     tax: number;
     discount: number;
     total: number;
+    estimatedTime: number;
     currentState: IOrderState;
     paidMethod: IPaymentMethod;
     sendAddress?: SendAddress;
@@ -31,6 +35,7 @@ const CART_INITIAL_STATE: CartState = {
     discount: 0,
     tax: 0,
     total: 0,
+    estimatedTime: 0,
     currentState: 'Ingresado',
     paidMethod: 'MercadoPago',
     sendAddress: undefined,
@@ -41,6 +46,7 @@ const CART_INITIAL_STATE: CartState = {
 export const CartProvider:FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer( cartReducer , CART_INITIAL_STATE );
+    const timetime = getTime();
 
     useEffect(() => {
         try {
@@ -79,13 +85,26 @@ export const CartProvider:FC<Props> = ({ children }) => {
         const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0.21);
         const discountRate = Number(process.env.NEXT_PUBLIC_DISCOUNT || 0.1);
 
+        //save in the variable ordersTime the time into a number, not a promise
+        
+        //const ordersTime = ;
+        console.log(timetime);
+            //resolver la promesa y retornar un umber;
+        const ordersTime = 0;
+        console.log(ordersTime);
+        const time = 
+            state.cart.reduce((prev, current) => prev + (current.estimatedTimeMinutes * current.cantidad), 0)
+            + ordersTime;
         const orderSummary = {
             numberOfItems,
             subTotal,
+            estimatedTime: time,
             discount: subTotal * discountRate,
             tax: subTotal * taxRate,
             total: subTotal * (taxRate + 1)
         }
+
+        console.log(orderSummary);
 
         dispatch({ type: '[Cart] - Update order summary', payload: orderSummary });
 
@@ -98,6 +117,7 @@ export const CartProvider:FC<Props> = ({ children }) => {
                                         type: '[Cart] - Update products in cart', 
                                         payload: [...state.cart, product] 
                                     })
+                                    console.log(product);
         const updatedProducts = state.cart.map(item => {
             if (item._id !== product._id) return item;
 
@@ -145,6 +165,7 @@ export const CartProvider:FC<Props> = ({ children }) => {
             subTotal: state.subTotal,
             currentState: state.currentState,
             paidMethod: withDiscount ? 'Efectivo' : 'MercadoPago',
+            estimatedTime: state.estimatedTime,
             tax: state.tax,
             discount: withDiscount ? state.subTotal * parseFloat(process.env.NEXT_PUBLIC_DISCOUNT?.toString() || '0.1') : 0,
             total: state.total - (withDiscount ? state.subTotal * parseFloat(process.env.NEXT_PUBLIC_DISCOUNT?.toString() || '0.1') : 0),

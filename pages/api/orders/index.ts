@@ -13,9 +13,28 @@ export default function handler(req: NextApiRequest, res: NextApiResponse<Data>)
     switch( req.method ) {
         case 'POST':
             return createOrder(req, res);
+        case 'GET':
+            return getOrders(req, res);
         default:
             return res.status(400).json({ message: 'Bad Request' })
     } 
+}
+
+export const getOrders = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+
+    await db.connect();
+    
+    const orders = await Order.find().lean();
+
+    const ordersTime: number = orders.map(order => {
+        return order.estimatedTime
+    }).reduce((a, b) => a + b, 0);
+
+    console.log(ordersTime);
+
+    await db.disconnect();
+
+    return ordersTime;
 }
 
 const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {

@@ -1,4 +1,5 @@
 import useSWR, { SWRConfiguration } from 'swr';
+import { elBuenSaborApi } from '../api';
 import { IProduct } from '../interfaces';
 import { IIngredient } from '../interfaces/ingredient';
 
@@ -27,4 +28,15 @@ export const useIngredients = (url: string, config: SWRConfiguration = {}) => {
         isLoading: !error && !data,
         isError: error
     };
+}
+
+export const getTime = async () => {
+    let time = 0;
+    const {data} = await elBuenSaborApi.get('/admin/orders');
+    
+    let validOrders = data.filter((order: { currentState: { toString: () => string; }; }) => order.currentState.toString() === 'Ingresado');
+    time = validOrders.reduce((acc: any, order: { estimatedTime: any; }) => {
+        return acc + order.estimatedTime;
+    } , 0);
+    return time;
 }
