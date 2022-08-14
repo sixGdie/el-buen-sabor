@@ -1,19 +1,19 @@
 import { ConfirmationNumberOutlined } from '@mui/icons-material';
-import { Chip, Grid, MenuItem, Select } from '@mui/material';
+import { Button, Chip, Grid, MenuItem, Select } from '@mui/material';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react'
 import useSWR from 'swr';
 import { elBuenSaborApi } from '../../api';
 import { AdminLayout } from '../../components/layouts/AdminLayout';
 import { IOrder, IUser, IOrderState } from '../../interfaces';
-
-
+import { useExcelDownloder } from 'react-xls';
 
 const OrdersPage = () => {
 
     const {data, error} = useSWR<IOrder[]>('/api/admin/orders');
     const [orders, setOrders] = useState<IOrder[]>([]);
-
+    const { ExcelDownloder, Type } = useExcelDownloder();
+    console.log(orders);
     useEffect(() => {
       if (data) {
         setOrders(data);
@@ -42,7 +42,7 @@ const OrdersPage = () => {
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'Orden ID', width: 150 },
     //{ field: 'email', headerName: 'Email', width: 200 },
-    //{ field: 'name', headerName: 'Nombre completo', width: 150 },
+    { field: 'name', headerName: 'Nombre Cliente', width: 150 },
     { field: 'total', headerName: 'Monto total', width: 100 },
     {
         field: 'role', 
@@ -106,13 +106,41 @@ const columns: GridColDef[] = [
     const rows = (data! || []).map(order => ({
         id: order._id,
         //email: (order.user as IUser).email,
-        //name: (order.user as IUser).name,
+        name: `${order.sendAddress.firstName} ${order.sendAddress.lastName}`,//(order.user as IUser).name,
         total: order.total,
         currentState: order.currentState,
         isPaid: order.isPaid,
         inStock: order.numberOfItems,
         createdAt: order.createdAt,
     }));
+
+    
+
+    const dataForExcel: Array<{[key: string]: any}> = rows.map(row => ({
+        id: row.id,
+        //email: row.email,
+        cliente: row.name,
+        total: row.total,
+        estadoActual: row.currentState.toString(),
+        pagado: row.isPaid ? 'Pagado' : 'No Pagado',
+        cantidadProductos: row.inStock,
+        creacionPedido: row.createdAt,
+    }));
+
+    console.log(dataForExcel);
+
+    const dataExcel = {
+        data: dataForExcel,
+        columns: [
+            { header: 'Orden ID', key: 'id' },
+            { header: 'Nombre Cliente', key: 'cliente' },
+            { header: 'Monto total', key: 'total' },
+            { header: 'Estado del pedido', key: 'estadoActual' },
+            { header: 'Pagado', key: 'pagado' },
+            { header: 'No. Productos', key: 'cantidadProductos' },
+            { header: 'Creada en', key: 'creacionPedido' },
+        ],
+    };
 
     return (
         <AdminLayout
@@ -129,6 +157,15 @@ const columns: GridColDef[] = [
                         rowsPerPageOptions={ [10] }
                     />
                 </Grid>
+                <Button>
+                    <ExcelDownloder
+                        data={dataExcel}
+                        filename={'Ordenes'}
+                        type={Type.Button} // or type={'button'}
+                    >
+                        Descargar en formato de hoja de cálculo
+                    </ExcelDownloder>
+                </Button>
             </Grid>
         </AdminLayout>
     )
