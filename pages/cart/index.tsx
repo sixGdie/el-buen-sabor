@@ -37,6 +37,7 @@ const CartPage = () => {
                             
                             <OrderSummary
                                 ordered={false}
+                                isAdmin={false}
                             />
 
                             <Box sx={{ mt: 3 }}>

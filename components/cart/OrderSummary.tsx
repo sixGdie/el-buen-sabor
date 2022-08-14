@@ -55,7 +55,7 @@ export const OrderSummary: FC<Props> = ({orderValues, ordered = false, isAdmin =
                 )
             }
             {
-                isAdmin === false && (
+                ordered === true && isAdmin === false && (
                     <><Grid item xs={6}>
                             <Typography>Tiempo estimado</Typography>
                         </Grid><Grid item xs={6} display='flex' justifyContent='end'>
