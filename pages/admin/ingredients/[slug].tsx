@@ -39,8 +39,6 @@ const IngredientAdminPage:FC<Props> = ({ ingredient }) => {
         defaultValues: ingredient
     })
 
-    //console.log(ingredient);
-
     useEffect(() => {
         const subscription = watch(( value, { name, type }) => {
             if(name === 'nombre'){
@@ -224,7 +222,6 @@ const IngredientAdminPage:FC<Props> = ({ ingredient }) => {
 
                             }
                             label="Activo"
-                            //{ ...register('active')}
                         />
 
 

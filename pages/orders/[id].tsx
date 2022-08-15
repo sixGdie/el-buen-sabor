@@ -13,8 +13,6 @@ import { useState } from 'react';
 import { Order } from '../../models';
 import { generatePdf } from "html-pdf-node-ts";
 
-//TODO: Ver la lógica para pagar en el local
-//TODO: Ver la lógica del descuento
 export type OrderResponseBody = {
     id: string;
     status:
@@ -33,25 +31,11 @@ interface Props {
 const OrderPage: NextPage<Props> = ({order, time}) => {
 
     const router = useRouter();
-    //const { sendAddress } = order;
 
     const [isPaying, setIsPaying] = useState(false);
 
-    /*if(order._id === ) {
-
-    }*/
-
-    const onOrderDownload = () => {
-        //llamar al metodo onOrderDownload
-        //elBuenSaborApi.get(`/orders/download`);
-        
-    };
-
     const onOrderCompleted = async( details: IOrder ) => {
         
-        /*if ( details.status !== 'COMPLETED' ) {
-            return alert('No hay pago en MercadoPago');
-        }*/
         setIsPaying(true);
 
         let jsonToSend = {
@@ -76,7 +60,6 @@ const OrderPage: NextPage<Props> = ({order, time}) => {
             });
 
             router.replace(data.message);
-           // router.reload();
 
         } catch (error) {
             setIsPaying(false);
@@ -192,7 +175,7 @@ const OrderPage: NextPage<Props> = ({order, time}) => {
                                                                     className='circular-btn' 
                                                                     fullWidth
                                                                     onClick={ () => { onOrderCompleted(order) } }
-                                                                    //disabled={ isPaying }
+                                                                    
                                                                 >
                                                                     Pagar orden
                                                                 </Button>                                                   
@@ -279,11 +262,6 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
             await db.disconnect()
             order = await dbOrders.getOrderById( id.toString() );
         }       
-        /*if ( dbOrder.total !== Number(data.response.body.quantity[0].amount.value) ) {
-            await db.disconnect();
-            return res.status(400).json({ message: 'Los montos de MercadoPago y nuestra orden no son iguales' });
-        }*/
-        //dbOrder.transactionId = transactionId;
     }
 
     let time = 0;
@@ -299,11 +277,7 @@ export const getServerSideProps: GetServerSideProps = async ({req, query}) => {
 
     const cooks = await dbUsers.getCooks();
 
-    console.log(cooks);
-
     cooks === 0 || cooks == null ? time = time : time /= cooks!;
-
-    console.log(time);
     
     return {
         props: {

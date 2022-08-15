@@ -61,7 +61,7 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
 
     if(imagen.length < 0){
         return res.status(400).json({ message: 'Debe incluir al menos 1 imagen' });
-    } //TODO: Ver qué hacer con esto
+    }
 
     try {
         await db.connect();
@@ -71,12 +71,10 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
             return res.status(400).json({ message: 'Producto no encontrado' });
         }
 
-        //product.imagenes.forEach( async(image) => {
             if(!imagen){
                 const [fileId, extension] = imagen.substring(imagen.lastIndexOf('/' + 1)).split('.');
                 await cloudinary.uploader.destroy(fileId);
-       //     }
-        }; //TODO Revisar esto
+        };
             
 
         const recipes:string = req.body.recipe.toString();
@@ -90,8 +88,6 @@ const updateProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
                 recipeAfterStuff.push([splitRecipes[i].trim(), parseInt(splitRecipes[i + 1].trim())]);
             }
         }
-
-        //console.log(recipeAfterStuff);
 
         await product.update(
             {
@@ -127,7 +123,7 @@ const createProduct = async (req: NextApiRequest, res: NextApiResponse<Data>) =>
 
     if(imagen.length < 0){
         return res.status(400).json({ message: 'Debe incluir al menos 1 imagen' });
-    } //TODO: Ver qué hacer con esto
+    } 
 
     try {
         await db.connect();

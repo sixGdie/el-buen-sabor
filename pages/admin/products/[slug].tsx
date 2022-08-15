@@ -69,7 +69,6 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                         .post<{message:string}>('/admin/upload', formData);
                 setValue(
                     'imagen', 
-                    //getValues('imagen'), 
                     data.message, 
                     { shouldValidate: true }); 
             }
@@ -84,7 +83,6 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
             'imagen', 
             getValues('imagen'),
             { shouldValidate: true });
-            //recargar la página
             router.reload();
     }
 
@@ -178,20 +176,6 @@ const ProductAdminPage:FC<Props> = ({ product }) => {
                             error={ !!errors.descripcion }
                             helperText={ errors.descripcion?.message }
                         />
-
-                        {/*<TextField
-                            label="Inventario"
-                            type='number'
-                            variant="filled"
-                            fullWidth 
-                            sx={{ mb: 1 }}
-                            { ...register('inStock', {
-                                required: 'Este campo es requerido',
-                                minLength: { value: 2, message: 'Mínimo 2 caracteres' }
-                            })}
-                            error={ !!errors.inStock }
-                            helperText={ errors.inStock?.message }
-                        />*/}
                         
                         <TextField
                             label="Precio"

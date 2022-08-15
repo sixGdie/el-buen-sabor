@@ -19,9 +19,7 @@ export const ProductCard: FC<Props> = ({product}) => {
     let ingredients: IIngredient[] = [];
 
     for(let i = 0; i < product.recipe.length; i++){
-        //console.log(product.recipe[i][0]);
         const { ingredient } = useIngredients(`/ingredients?nombre=${product.recipe[i][0]}`);
-        //console.log(ingredient);
         for(let j = 0; j < ingredient.length; j++){
             ingredients.push(ingredient[j]);
         };
@@ -85,7 +83,5 @@ export const ProductCard: FC<Props> = ({product}) => {
                 <Typography fontWeight={500}>{`$${product.precio}`}</Typography>
             </Box>
         </Grid>
-    //}
-    //</div>
     )
 }

@@ -30,8 +30,6 @@ export const getOrders = async (req: NextApiRequest, res: NextApiResponse<Data>)
         return order.estimatedTime
     }).reduce((a, b) => a + b, 0);
 
-    console.log(ordersTime);
-
     await db.disconnect();
 
     return ordersTime;
@@ -41,8 +39,6 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     const { orderItems, total } = req.body as IOrder;
 
-    console.log(orderItems);
-
     const session: any = await getSession({ req });
 
     if(!session) {
@@ -50,11 +46,10 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     }
 
     const productsIds = orderItems.map( product => product._id);
-    //console.log(req.body);
+
     await db.connect();
     const dbProducts = await Product.find({ _id: { $in: productsIds } });
-    //console.log(req.body);
-    //Validaciones de la cookie vs el backend
+
     try {
         const subTotal = orderItems.reduce((prev, current) => {
             
@@ -79,7 +74,7 @@ const createOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
     
     const userId = session.user._id;
     const newOrder = new Order({ ...req.body, isPaid: false, currentState: 'Ingresado', user: userId });
-    //console.log(newOrder);
+
     newOrder.total = Math.round(newOrder.total * 100) / 100; //Siempre vamos a tener dos decimales
     await newOrder.save();
     await db.disconnect();

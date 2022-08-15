@@ -58,7 +58,6 @@ const ProductsPage = () => {
         category: product.categoria,
         price: product.precio,
         slug: product.slug
-        //TODO: Hacer la lógica para agregar ingredientes y los otros valores que faltan en el form
     }));
 
     return (

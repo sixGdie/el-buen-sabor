@@ -40,8 +40,6 @@ const CART_INITIAL_STATE: CartState = {
     sendAddress: undefined,
 }
 
-//TODO: Cambiar el estado del pedido
-
 export const CartProvider:FC<Props> = ({ children }) => {
 
     const [state, dispatch] = useReducer( cartReducer , CART_INITIAL_STATE );
@@ -93,13 +91,7 @@ export const CartProvider:FC<Props> = ({ children }) => {
         const subTotal = state.cart.reduce((prev, current) => (current.cantidad * current.precio) + prev, 0);
         const taxRate = Number(process.env.NEXT_PUBLIC_TAX_RATE || 0.21);
         const discountRate = Number(process.env.NEXT_PUBLIC_DISCOUNT || 0.1);
-
-        //save in the variable ordersTime the time into a number, not a promise
-        
-        //const ordersTime = ;
-            //resolver la promesa y retornar un umber;
         const ordersTime = 0;
-        console.log(ordersTime);
         const time = 
             state.cart.reduce((prev, current) => prev + (current.estimatedTimeMinutes * current.cantidad), 0)
             + ordersTime;
@@ -123,7 +115,6 @@ export const CartProvider:FC<Props> = ({ children }) => {
                                         type: '[Cart] - Update products in cart', 
                                         payload: [...state.cart, product] 
                                     })
-                                    console.log(product);
         const updatedProducts = state.cart.map(item => {
             if (item._id !== product._id) return item;
 

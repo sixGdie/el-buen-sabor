@@ -29,10 +29,6 @@ export const AuthProvider:FC<Props> = ({ children }) => {
     const router = useRouter();
     const { data, status } = useSession();
 
-    /*useEffect(() => {
-        checkToken();
-    }, [])*/
-
     useEffect(() => {
         if (status === 'authenticated') {
             dispatch({ type: '[Auth] - Login', payload: data?.user as IUser });
@@ -92,7 +88,6 @@ export const AuthProvider:FC<Props> = ({ children }) => {
     }
 
     const logout = () => {
-        //Cookies.remove('token');
         Cookies.remove('cart');
         Cookies.remove('firstName');
         Cookies.remove('lastName');
@@ -101,7 +96,6 @@ export const AuthProvider:FC<Props> = ({ children }) => {
         Cookies.remove('cp');
         Cookies.remove('department');
         Cookies.remove('phone');
-        //router.reload();
         signOut();
     }
 

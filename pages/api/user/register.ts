@@ -60,7 +60,6 @@ const registerUser = async (req: NextApiRequest, res: NextApiResponse<Data>) => 
     });
 
     if (user) {
-        //await db.disconnect();
         return res.status(400).json({ message: 'Ese correo ya está registrado' })
     }
 

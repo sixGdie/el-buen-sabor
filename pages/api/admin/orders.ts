@@ -68,23 +68,9 @@ const updateOrder = async (req: NextApiRequest, res: NextApiResponse<Data>) => {
         }).reduce((a: number, b: number) => a + b, 0);
     }
 
-    //console.log(req.body.orderItems);
-    console.log(order.estimatedTime);
-    
-    //return res.status(400).json({ message: 'Debug xq sí' });
-
     await order.save();
 
     await db.disconnect();
     
     res.status(200).json({ message: 'Orden actualizada correctamente' });
 }
-
-/*const onOrderDownload = () => {
-    let options = { format: 'A4' };
-    let file = [{ url: "https://example.com", name: 'example.pdf' }];
-
-    generatePdf(file, options).then(output => {
-    console.log("PDF Buffer:-", output); // PDF Buffer:- [{url: "https://example.com", name: "example.pdf", buffer: <PDF buffer>}]
-    });
-};*/

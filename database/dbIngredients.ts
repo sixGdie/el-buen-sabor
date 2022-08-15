@@ -46,7 +46,5 @@ export const getIngredientBySlug =async (slug: string): Promise<IIngredient | nu
         return null;
     }
 
-    //console.log(ingredient);
-
     return JSON.parse(JSON.stringify(ingredient));
 }

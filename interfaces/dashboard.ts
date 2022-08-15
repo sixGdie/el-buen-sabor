@@ -1,3 +1,6 @@
+import { IOrder } from "./order";
+import { IProduct } from "./products";
+
 export interface DashboardSummaryResponse {
     numberOfOrders: number;
     paidOrders: number;
@@ -6,4 +9,7 @@ export interface DashboardSummaryResponse {
     productsWithNoInventory: number;
     lowInventory: number;
     notPaidOrders: number;
+    products: any;
+    orders: any;
+    ingredients: any;
 }

@@ -16,7 +16,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             //refreshInterval: 500, PARA ACTUALIZAR LA PAGINA CADA CIERTA CANTIDAD DE MS
             fetcher: (resourse, init) => fetch(resourse, init).then((res) => res.json()),
           }}
-          >
+>
             <AuthProvider>
               <CartProvider>
                 <UiProvider>

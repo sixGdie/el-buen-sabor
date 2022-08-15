@@ -120,10 +120,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
     for(let j = 0; j < ingredient!.length; j++) {
       ingredients.push(ingredient![j]);
     }
-    //ngredients.push(ingredient);
   }
-
-  //console.log(ingredients);
 
   const stock = (): number => {
     let neededIngredients = product!.recipe as [string, number][];
@@ -139,7 +136,6 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
       console.log('No hay stock');
       return 0;
     }
-    //console.log(Math.trunc(Math.min(...stock)));
     return Math.trunc(Math.min(...stock));
 }
 

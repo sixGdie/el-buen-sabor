@@ -6,7 +6,7 @@
 > - Barroso, Matías
 > - Zabala, Diego
 
-Proyecto de [Next.js](https://nextjs.org/) bootstrapped con [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Proyecto de [Next.js](https://nextjs.org/) creado con [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Iniciar
 
@@ -38,11 +38,7 @@ Este proyecto está hecho con yarn, no usar nunca npm para trabajar en el mismo.
 v16.14.2
 ```
 
-## Bugs conocidos:
+## Datos de inicio de usuario admin:
+mail: juanbuensabor@gmail.com
+pass: 123456
 
-Nada por ahora
-
-## Pendiente:
-
-- Quitar el uso de base de datos Mongo y la api rest nativa y usar en su lugar el backend express con base de datos MySQL (Siendo sinceros, me gusta mucho la api rest nativa, evaluaría hacer las consultas de sql desde acá y descartar la idea de usar sequelize tal como dijimos con el profe Yacomo) 
-- Ver que hacer con el costo de envío (actualmente sólo existe como placeholder en la página del carrito y sumario pero ni se calcula. Además, los productos en la db tienen cada uno su costo de envío...por ninguna razón. Cambiar eso)

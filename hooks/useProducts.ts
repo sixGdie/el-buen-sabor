@@ -9,7 +9,6 @@ const fetcher = (...args:[key:string]) => fetch(...args).then(res => res.json())
 
 export const useProducts = (url: string, config: SWRConfiguration = {}) => {
 
-    //const { data, error } = useSWR<IProduct[]>(`/api${url}`, fetcher, config );
     const { data, error } = useSWR<IProduct[]>(`/api${url}`, config );
     
     return {
@@ -20,7 +19,7 @@ export const useProducts = (url: string, config: SWRConfiguration = {}) => {
 }
 
 export const useIngredients = (url: string, config: SWRConfiguration = {}) => {
-    //const { data, error } = useSWR<IProduct[]>(`/api${url}`, fetcher, config );
+    
     const { data, error } = useSWR<IIngredient[]>(`/api${url}`, config );
     
     return {

@@ -10,9 +10,7 @@ import { useSession } from 'next-auth/react';
 
 const HomePage: NextPage = () => {
 
-  const {products, isLoading} = useProducts('/products');
-  //const { ingredient } = useIngredients('/ingredients');
-  
+  const {products, isLoading} = useProducts('/products'); 
 
   return (
     <ShopLayout 

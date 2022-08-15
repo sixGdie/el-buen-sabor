@@ -13,7 +13,7 @@ const OrdersPage = () => {
     const {data, error} = useSWR<IOrder[]>('/api/admin/orders');
     const [orders, setOrders] = useState<IOrder[]>([]);
     const { ExcelDownloder, Type } = useExcelDownloder();
-    console.log(orders);
+
     useEffect(() => {
       if (data) {
         setOrders(data);
@@ -41,7 +41,6 @@ const OrdersPage = () => {
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'Orden ID', width: 150 },
-    //{ field: 'email', headerName: 'Email', width: 200 },
     { field: 'name', headerName: 'Nombre Cliente', width: 150 },
     { field: 'total', headerName: 'Monto total', width: 100 },
     {
@@ -97,16 +96,13 @@ const columns: GridColDef[] = [
     { field: 'createdAt', headerName: 'Creada en', width: 300 },
 ];
 
-    //const {data, error} = useSWR<IOrder[]>('/api/admin/orders');
-
     if(!data && !error) {
         return <></>
     }
 
     const rows = (data! || []).map(order => ({
         id: order._id,
-        //email: (order.user as IUser).email,
-        name: `${order.sendAddress.firstName} ${order.sendAddress.lastName}`,//(order.user as IUser).name,
+        name: `${order.sendAddress.firstName} ${order.sendAddress.lastName}`,
         total: order.total,
         currentState: order.currentState,
         isPaid: order.isPaid,
@@ -118,7 +114,6 @@ const columns: GridColDef[] = [
 
     const dataForExcel: Array<{[key: string]: any}> = rows.map(row => ({
         id: row.id,
-        //email: row.email,
         cliente: row.name,
         total: row.total,
         estadoActual: row.currentState.toString(),
@@ -126,8 +121,6 @@ const columns: GridColDef[] = [
         cantidadProductos: row.inStock,
         creacionPedido: row.createdAt,
     }));
-
-    console.log(dataForExcel);
 
     const dataExcel = {
         data: dataForExcel,

@@ -31,8 +31,6 @@ const getIngredients = async (req: NextApiRequest, res: NextApiResponse<Data>) =
 
     await db.connect();
 
-    //console.log(nombre);
-
     const ingredient = await Ingredient.find( {nombre: nombre} )
                                 .select('nombre unidadMedida categoria costoUnidad inStock minStock active slug -_id')
                                 .lean();
