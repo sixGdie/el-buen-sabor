@@ -130,9 +130,9 @@ const OrdersPage = () => {
   }))
 
   const dataForExcel: Array<{ [key: string]: any }> = rows.map((row) => ({
-    'ID': row.id,
-    'Cliente': row.name,
-    'Total': row.total,
+    ID: row.id,
+    Cliente: row.name,
+    Total: row.total,
     'Estado Pedido': row.currentState.toString(),
     'Estado Pago': row.isPaid ? 'Pagado' : 'No Pagado',
     'Cantidad Productos': row.inStock,
@@ -156,6 +156,15 @@ const OrdersPage = () => {
             columns={columns}
             pageSize={10}
             rowsPerPageOptions={[10]}
+            sx={{
+              boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.3)',
+              border: 'none',
+              borderColor: 'primary.light',
+              borderRadius: '10px',
+              '& .MuiDataGrid-cll:hover': {
+                color: 'primary.main',
+              },
+            }}
           />
         </Grid>
         <Button>
